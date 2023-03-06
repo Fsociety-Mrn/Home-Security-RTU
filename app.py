@@ -1,4 +1,6 @@
 import cv2
+
+
 from flask import Flask, jsonify, request,render_template,Response
 
 app = Flask(__name__)
@@ -65,5 +67,9 @@ def video_feed():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug=True,port=3030)
+
+    app.run(
+        host='0.0.0.0',
+        debug=True,
+        port=3030)
     
