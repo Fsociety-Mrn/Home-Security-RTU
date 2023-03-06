@@ -1,0 +1,50 @@
+import os
+from werkzeug.utils import secure_filename
+from flask import Flask, jsonify, request,render_template,Response
+from JoloRecognition import JoloRecognition as JL
+
+app = Flask(__name__)
+
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16 MB
+app.config['UPLOAD_FOLDER'] = 'Static/uploads'
+app.config['MIMETYPES'] = {'image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp'}
+
+
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/face-recognition', methods=['POST'])
+def upload_file():
+    file = request.files['file']
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return 'File uploaded successfully'
+    elif file and not allowed_file(file.filename):
+        return 'Invalid file type'
+    else:
+        file_webp = request.files['file_webp']
+        if file_webp and allowed_file(file_webp.filename):
+            filename = secure_filename(file_webp.filename)
+            file_webp.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return 'Webp image uploaded successfully'
+        else:
+            return 'Invalid file type'
+
+@app.route("/")
+def hello_world():
+    return "This is  basic  server made from flask!"
+
+    
+
+
+if __name__ == '__main__':
+
+    app.run(
+        host='0.0.0.0',
+        debug=True,
+        port=1010)
+    
