@@ -1,2 +1,4 @@
 /Model/InceptionResnetV1_mobile.ptl
 /Known_Faces/Ariel_Sharon
+/node_modules
+/.vscode
