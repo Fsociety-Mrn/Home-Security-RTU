@@ -11,23 +11,6 @@ camera.set(4,1080)
 # face detection
 face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-@app.route("/server")
-def hello_world():
-    return "This is  basic  server made from flask!"
-
-
-@app.route("/GET",methods=['GET'])
-def get():
-    return "get example"
-
-@app.route("/POST",methods=['POST']) 
-def post():
-    return jsonify(
-        {
-            'name' :  request.json['name'],
-            'age'  :  request.json['age']
-         })
-    
 
 def generate_frames():
     while True:
@@ -46,10 +29,6 @@ def generate_frames():
                     face = frame[y:y+h, x:x+w]
                     # draw reactnagle on face detected
                     cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2) 
-            elif len(faces) == 0:
-                print("no faces")
-            else:
-                print("more than one facess")
             
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()

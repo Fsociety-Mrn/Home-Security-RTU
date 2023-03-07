@@ -3,68 +3,12 @@
   <head>
     <meta charset="UTF-8">
     <title>Webcam Capture Demo</title>
-    <style>
-      #video-wrapper {
-        position: relative;
-        width: 100%;
-        height: auto;
-        margin: 0 auto;
-        max-width: 640px;
-      }
-      #video {
-        width: 100%;
-        height: auto;
-        z-index:15
-      }
-      #canvas {
-        display: none;
-      }
-      #capture-button {
-        font-family: Segoe UI, Arial, sans-serif;
-        background-color: green;
-        color: white;
-        display: block;
-        margin: 0 auto;
-      }
-      #capture-button.enabled {
-        display: inline-block;
-      }
-      #center{
-        text-align: center;
-        margin-top: 20px;
-      }
-      h1{
-        text-align: center;
-      }
 
-      #line {
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background-color: red;
-        pointer-events: none;
-        z-index: 1;
-      }
-      
-      #overlay{
-        position:absolute;
-        top:0;
-        width:100%;
-        text-align:center;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        height: 100%;
-      }
+    <!-- CSS -->
+    <link rel="stylesheet" href="static/style.css"> 
 
-      img {
-        display:inline-block;
-        
-      }
-    </style>
   </head>
+  
   <body>
     <h1>Open Webcam</h1>
     <div id="video-wrapper">
@@ -78,37 +22,7 @@
       <p>Please Align your face with the camera angle and press capture. </p>
     </div>
     
-    <script>
-      const video = document.getElementById('video');
-      const canvas = document.getElementById('canvas');
-      const captureButton = document.getElementById('capture-button');
-
-      // Get webcam stream and start playing video
-      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
-        .then(stream => {
-          video.srcObject = stream;
-          video.play();
-        })
-        .catch(err => {
-          console.error('Error accessing camera:', err);
-        });
-
-      // Capture image when button is clicked
-      captureButton.addEventListener('click', () => {
-        // Draw video frame on canvas
-        const context = canvas.getContext('2d');
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        // Convert canvas to image data and display in new window
-        const dataURL = canvas.toDataURL();
-        const imageWindow = window.open();
-        imageWindow.document.write(`<img src="${dataURL}" />`);
-      });
-
-      // Enable capture button when video starts playing
-      video.addEventListener('playing', () => {
-        captureButton.classList.add('enabled');
-      });
-    </script>
+    <!-- Javascript -->
+    <script src="static/index.js"></script> 
   </body>
 </html>

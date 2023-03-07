@@ -1,44 +1,59 @@
-html, body{
-    margin: 0;
-    padding: 0;
-    height: 100%;
+#video-wrapper {
+    position: relative;
     width: 100%;
+    height: auto;
+    margin: 0 auto;
+    max-width: 640px;
+  }
+  #video {
+    width: 100%;
+    height: auto;
+    z-index:15
+  }
+  #canvas {
+    display: none;
+  }
+  #capture-button {
+    font-family: Segoe UI, Arial, sans-serif;
+    background-color: green;
+    color: white;
+    display: block;
+    margin: 0 auto;
+  }
+  #capture-button.enabled {
+    display: inline-block;
+  }
+  #center{
+    text-align: center;
+    margin-top: 20px;
+  }
+  h1{
+    text-align: center;
+  }
+
+  #line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: red;
+    pointer-events: none;
+    z-index: 1;
   }
   
-  #camera, #camera--view, #camera--sensor, #camera--output{
-      position: fixed;
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
+  #overlay{
+    position:absolute;
+    top:0;
+    width:100%;
+    text-align:center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
   }
-  
-  #camera--view, #camera--sensor, #camera--output{
-      transform: scaleX(-1);
-      filter: FlipH;
-  }
-  
-  #camera--trigger{
-      width: 200px;
-      background-color: black;
-      color: white;
-      font-size: 16px;
-      border-radius: 30px;
-      border: none;
-      padding: 15px 20px;
-      text-align: center;
-      box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
-      position: fixed;
-      bottom: 30px;
-      left: calc(50% - 100px);
-  }
-  
-  .taken{
-      height: 100px!important;
-      width: 100px!important;
-      transition: all 0.5s ease-in;
-      border: solid 3px white;
-      box-shadow: 0 5px 10px 0 rgba(0,0,0,0.2);
-      top: 20px;
-      right: 20px;
-      z-index: 2;
+
+  img {
+    display:inline-block;
+    
   }

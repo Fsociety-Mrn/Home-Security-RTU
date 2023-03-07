@@ -1,35 +1,35 @@
-// Set constraints for the video stream
-var constraints = { video: { facingMode: "user" }, audio: false };
-var track = null;
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const captureButton = document.getElementById('capture-button');
 
-// Define constants
-const cameraView = document.querySelector("#camera--view"),
-    cameraOutput = document.querySelector("#camera--output"),
-    cameraSensor = document.querySelector("#camera--sensor"),
-    cameraTrigger = document.querySelector("#camera--trigger");
+      // Get webcam stream and start playing video
+navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
+.then(stream => 
+    {
+        video.srcObject = stream;
+        video.play();
+    }
+).catch(err => 
+    {
+    console.error('Error accessing camera:', err);
+    }
+);
 
-// Access the device camera and stream to cameraView
-function cameraStart() {
-    navigator.mediaDevices
-        .getUserMedia(constraints)
-        .then(function(stream) {
-            track = stream.getTracks()[0];
-            cameraView.srcObject = stream;
-        })
-        .catch(function(error) {
-            console.error("Oops. Something is broken.", error);
-        });
-}
+// Capture image when button is clicked
+captureButton.addEventListener('click', () => 
+    {
+        // Draw video frame on canvas
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-// Take a picture when cameraTrigger is tapped
-cameraTrigger.onclick = function() {
-    cameraSensor.width = cameraView.videoWidth;
-    cameraSensor.height = cameraView.videoHeight;
-    cameraSensor.getContext("2d").drawImage(cameraView, 0, 0);
-    cameraOutput.src = cameraSensor.toDataURL("image/webp");
-    cameraOutput.classList.add("taken");
-    // track.stop();
-};
+        // Convert canvas to image data and display in new window
+        const dataURL = canvas.toDataURL();
+        const imageWindow = window.open();
+        imageWindow.document.write(`<img src="${dataURL}" />`);
+    }
+);
 
-// Start the video stream when the window loads
-window.addEventListener("load", cameraStart, false);
+      // Enable capture button when video starts playing
+video.addEventListener('playing', () => {
+        captureButton.classList.add('enabled');
+});
