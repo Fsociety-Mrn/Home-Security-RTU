@@ -2,18 +2,20 @@ import os
 import cv2
 
 from werkzeug.utils import secure_filename
-from flask import Flask, jsonify, request,render_template,Response
+from flask import Flask, request
 from FaceDetection.JoloRecognition import JoloRecognition as JL
 
 app = Flask(__name__)
 
-# for face-recogition server
-app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 16 MB
+# 16 MB max file size
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  
+
+# Upload folder status
 app.config['UPLOAD_FOLDER'] = 'Static/uploads'
-app.config['MIMETYPES'] = {'image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp', 'image/mp4'}
 
-
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'mp4'}
+# accepted file type
+app.config['MIMETYPES'] = {'image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp'}
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
 # validate the extentsion
 def allowed_file(filename):
@@ -21,25 +23,27 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-
 @app.route('/face-recognition', methods=['POST'])
 def upload_file():
     
     file = request.files['file']
     
+    # check file if exist
     if file and allowed_file(file.filename):
         
         # check if file name is not malicious
         filename = secure_filename(file.filename)
         
         # save the file
-        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        # read sending file via cv2
         file = cv2.imread(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        result = JL().Face_Compare(file)
-        # cv2.imshow("hcehckc", file)
-        # cv2.waitKey(0)
+
+        # facial reconition
+        result = JL().Face_Compare(file,threshold=0.6)
         
+        # return the result
         return result[0]
     else:
         
@@ -51,8 +55,6 @@ def upload_file():
 @app.route("/")
 def hello_world():
     return "This is  basic  server made from flask!"
-
-    
 
 
 if __name__ == '__main__':

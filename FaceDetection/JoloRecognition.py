@@ -1,5 +1,4 @@
 import torch
-import cv2
 
 from torchvision import datasets
 from torch.utils.data import DataLoader
@@ -46,10 +45,11 @@ class JoloRecognition:
                 
                 # check if there is detected faces
                 
+                
                 if len(match_list) > 0:
                     
                     min_dist = min(match_list)
-
+        
                     if min_dist < threshold:
                         
                         idx_min = match_list.index(min_dist)
@@ -92,10 +92,5 @@ class JoloRecognition:
         data = [embedding_list, Name_list]
         torch.save(data,location + '/data.pt')
         return "done"
-    
-# file =  cv2.imread("FaceDetection/Known_Faces/Francis Maneclang/6.jpg")
 
-# print(JoloRecognition().Face_Compare(face=file)[0])
-
-# JoloRecognition().Face_Train("FaceDetection/Known_Faces","FaceDetection/Model")
 
