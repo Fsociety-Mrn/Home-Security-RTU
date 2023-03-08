@@ -70,5 +70,5 @@ def facialDetection(face_recognition_url ='http://192.168.100.36:1030/face-recog
                 timer += time.time() - start_time
                 start_time = time.time()
                     
-            _, frame_encoded  = cv2.imencode('.jpg', frame)
-            yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame_encoded.tobytes() + b'\r\n')
+        _, frame_encoded  = cv2.imencode('.jpg', frame)
+        yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + frame_encoded.tobytes() + b'\r\n')
