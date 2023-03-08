@@ -21,6 +21,7 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+
 @app.route('/face-recognition', methods=['POST'])
 def upload_file():
     
