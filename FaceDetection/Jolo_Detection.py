@@ -54,7 +54,7 @@ def facialDetection(face_recognition_url ='http://192.168.100.36:1030/face-recog
                     files={
                             'file': ('image.jpg', BytesIO(img_encoded), 'image/jpeg')
                         })
- 
+                print(response.text)
                 if response.status_code == 200:
                     R , G , B = 0,255,0
                     Text = response.text
