@@ -1,9 +1,4 @@
-import cv2
-import requests
-import time
-
 from flask import Flask, render_template,Response
-from io import BytesIO
 from FaceDetection.Jolo_Detection import facialDetection
 
 

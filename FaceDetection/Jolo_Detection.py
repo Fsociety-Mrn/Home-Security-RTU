@@ -35,8 +35,6 @@ def facialDetection(face_recognition_url ='http://192.168.100.36:1030/face-recog
 
         # checking detecting face should be 1
         if len(faces) == 1:
-            # Get the coordinates of the face
-
                             
             # Check if 2 seconds have elapsed since the last send
             if timer >= 1:
@@ -51,6 +49,7 @@ def facialDetection(face_recognition_url ='http://192.168.100.36:1030/face-recog
                             'file': ('image.png', BytesIO(img_encoded), 'image/png')
                         })
                 
+                # check if there is matches and if status code is 200 
                 B, G, R = (255, 0, 0) if response.text == 'No match detected' else (0, 255, 0) if response.status_code == 200 else (0, 0, 255)
                 Text = response.text
 
@@ -63,11 +62,11 @@ def facialDetection(face_recognition_url ='http://192.168.100.36:1030/face-recog
                 timer += time.time() - start_time
                 start_time = time.time()
                 
-            # detect faces
+            # Get the coordinates of the face
             (x, y, w, h) = faces[0]
-            # Draw a rectangle around the face
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (R,G,B), 2)
             
+            # Draw a rectangle around the face and pt text
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (R,G,B), 2)
             cv2.putText(frame,Text,(x,y+h+30),cv2.FONT_HERSHEY_COMPLEX,1,(R,G,B),1)
                     
         _, frame_encoded  = cv2.imencode('.png', frame)
