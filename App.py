@@ -32,9 +32,10 @@ def upload_file():
         # check if file name is not malicious
         filename = secure_filename(file.filename)
         
-        file = cv2.imread(filename)
+        file = cv2.imread(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
         cv2.imshow("hcehckc", file)
+        cv2.waitKey(0)
         # save the file
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return 'File uploaded successfully'
