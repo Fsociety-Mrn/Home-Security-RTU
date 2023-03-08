@@ -33,14 +33,14 @@ def upload_file():
         filename = secure_filename(file.filename)
         
         # save the file
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
         file = cv2.imread(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        
-        cv2.imshow("hcehckc", file)
-        cv2.waitKey(0)
+        result = JL().Face_Compare(file)
+        # cv2.imshow("hcehckc", file)
+        # cv2.waitKey(0)
 
-        return 'File uploaded successfully'
+        return result[0]
     else:
         
         # invalid file

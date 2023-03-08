@@ -1,5 +1,5 @@
 import torch
-
+import cv2
 
 from torchvision import datasets
 from torch.utils.data import DataLoader
@@ -90,5 +90,6 @@ class JoloRecognition:
         torch.save(data,location + '/data.pt')
         return "done"
     
+file =  cv2.imread("Static/uploads/image.jpg")
 
-
+JoloRecognition().Face_Compare(face=file)
