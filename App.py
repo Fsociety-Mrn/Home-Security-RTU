@@ -1,4 +1,6 @@
 import os
+import cv2
+
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, request,render_template,Response
 from JoloRecognition import JoloRecognition as JL
@@ -6,8 +8,6 @@ from JoloRecognition import JoloRecognition as JL
 app = Flask(__name__)
 
 # for face-recogition server
-
-
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 16 MB
 app.config['UPLOAD_FOLDER'] = 'Static/uploads'
 app.config['MIMETYPES'] = {'image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp', 'image/mp4'}
@@ -28,9 +28,12 @@ def upload_file():
     
     if file and allowed_file(file.filename):
         
-        # checj if file name is not malicious
+        # check if file name is not malicious
         filename = secure_filename(file.filename)
         
+        file = cv2.imread(filename)
+        
+        cv2.imshow("hcehckc", file)
         # save the file
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return 'File uploaded successfully'

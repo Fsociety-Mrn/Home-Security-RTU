@@ -1,10 +1,10 @@
 import torch
-import psutil
+
 
 from torchvision import datasets
 from torch.utils.data import DataLoader
 from facenet_pytorch import MTCNN,InceptionResnetV1
-from torch.utils.mobile_optimizer import optimize_for_mobile
+
 
 
 class JoloRecognition:
@@ -24,12 +24,6 @@ class JoloRecognition:
         self.Embeding_List = self.Saved_Data[0]
         self.Name_List = self.Saved_Data[1]
         
-        # allowrd file
-        self.ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'webp'}
-        
-    def validateFile(self,filename):
-        return '.' in filename and filename.rsplit('.', 1)[1].lower() in self.ALLOWED_EXTENSIONS
-    
     # for face recognition
     def Face_Compare(self, face, threshold=0.6):
     
