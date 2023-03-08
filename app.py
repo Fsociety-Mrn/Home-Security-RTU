@@ -2,6 +2,9 @@ import cv2
 
 from flask import Flask, jsonify, request,render_template,Response
 
+import requests
+from io import BytesIO
+
 app = Flask(__name__)
 
 #  setup camera
@@ -12,7 +15,9 @@ camera.set(4,1080)
 face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 
-def generate_frames():
+
+def generate_frames(url=''):
+    
     while True:
         success, frame = camera.read()
         if not success:
@@ -29,7 +34,11 @@ def generate_frames():
                     face = frame[y:y+h, x:x+w]
                     # draw reactnagle on face detected
                     cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2) 
-            
+                    
+                    img_bytes = cv2.imencode('.jpg', frame)[1].tobytes()
+                    response = requests.post(url, files={'file': ('image.jpg', BytesIO(img_bytes), 'image/jpeg')})
+                    print(response.text)
+                    
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
