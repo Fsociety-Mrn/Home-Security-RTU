@@ -51,7 +51,10 @@ class JoloRecognition:
                     min_dist = min(match_list)
 
                     if min_dist < threshold:
+                        
                         idx_min = match_list.index(min_dist)
+                        
+                        print(self.Name_List[idx_min])
                         return (self.Name_List[idx_min], min_dist)
                     else:
                         return ('No match detected', None)
@@ -90,8 +93,9 @@ class JoloRecognition:
         torch.save(data,location + '/data.pt')
         return "done"
     
-# file =  cv2.imread("Static/uploads/image.jpg")
+# file =  cv2.imread("FaceDetection/Known_Faces/Francis Maneclang/6.jpg")
 
-# JoloRecognition().Face_Compare(face=file)
+# print(JoloRecognition().Face_Compare(face=file)[0])
+
 # JoloRecognition().Face_Train("FaceDetection/Known_Faces","FaceDetection/Model")
 

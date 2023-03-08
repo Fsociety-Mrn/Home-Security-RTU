@@ -39,7 +39,7 @@ def upload_file():
         result = JL().Face_Compare(file)
         # cv2.imshow("hcehckc", file)
         # cv2.waitKey(0)
-
+        
         return result[0]
     else:
         
