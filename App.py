@@ -3,7 +3,7 @@ import cv2
 
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, request,render_template,Response
-from JoloRecognition import JoloRecognition as JL
+from FaceDetection.JoloRecognition import JoloRecognition as JL
 
 app = Flask(__name__)
 
