@@ -13,7 +13,15 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(facialDetection(camera=camera), mimetype='multipart/x-mixed-replace; boundary=frame')
+    
+    # load camera
+    camera = cv2.VideoCapture(0)
+    
+    # Load face detector
+    faceetector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    
+    
+    return Response(facialDetection(camera=camera, face_detector=faceetector), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':

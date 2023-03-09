@@ -4,14 +4,8 @@ import time
 
 from io import BytesIO
 
-#  setup camera
-# camera = cv2.VideoCapture(0)
-# camera.set(4,1080)
 
-# Load face detector
-face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
-def facialDetection(face_recognition_url ='http://192.168.100.36:1030/face-recognition', camera=None):
+def facialDetection(face_recognition_url ='http://192.168.100.36:1030/face-recognition', camera=None, face_detector=None):
     
     R , G , B = 0,255,0
     Text = ""
@@ -42,16 +36,16 @@ def facialDetection(face_recognition_url ='http://192.168.100.36:1030/face-recog
                 # Encode the frame as a JPEG image
                 img_encoded  = cv2.imencode('.png', frame)[1].tobytes()
                 
-                # # Send the JPEG image to the face recognition API
-                # response = requests.post(
-                #     face_recognition_url, 
-                #     files={
-                #             'file': ('image.png', BytesIO(img_encoded), 'image/png')
-                #         })
+                # Send the JPEG image to the face recognition API
+                response = requests.post(
+                    face_recognition_url, 
+                    files={
+                            'file': ('image.png', BytesIO(img_encoded), 'image/png')
+                        })
                 
-                # # check if there is matches and if status code is 200 
-                # B, G, R = (255, 0, 0) if response.text == 'No match detected' else (0, 255, 0) if response.status_code == 200 else (0, 0, 255)
-                # Text = response.text
+                # check if there is matches and if status code is 200 
+                B, G, R = (255, 0, 0) if response.text == 'No match detected' else (0, 255, 0) if response.status_code == 200 else (0, 0, 255)
+                Text = response.text
 
                     
                 # Reset the timer and the start time
