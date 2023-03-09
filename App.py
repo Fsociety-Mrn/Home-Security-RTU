@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 from flask import Flask, request
 from FaceDetection.JoloRecognition import JoloRecognition as JL
 
-app = Flask(__name__)
+app = Flask(__name__) 
 
 # 16 MB max file size
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  
@@ -14,7 +14,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = 'Static/uploads'
 
 # accepted file type
-app.config['MIMETYPES'] = {'image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp'}
+app.config['MIMETYPES'] = {'image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp.'}
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
 # validate the extentsion
