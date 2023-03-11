@@ -92,7 +92,7 @@ def facialDetection(face_recognition_url = url + '/face-recognition', camera=Non
         if len(faces) == 1:
                             
             # Check if 2 seconds have elapsed since the last send
-            if timer >= 1:
+            if timer >= 0.8:
                         
                 # Encode the frame as a JPEG image
                 img_encoded  = cv2.imencode('.png', frame)[1].tobytes()
