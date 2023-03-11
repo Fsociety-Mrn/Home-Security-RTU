@@ -8,7 +8,7 @@ from FaceDetection.JoloRecognition import JoloRecognition as JL
 app = Flask(__name__) 
 
 # 16 MB max file size
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  
 
 # Upload folder status
 app.config['UPLOAD_FOLDER'] = 'Static/uploads'
