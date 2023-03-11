@@ -66,7 +66,7 @@ class JoloRecognition:
                         
                         idx_min = match_list.index(min_dist)
                         
-                        print(self.Name_List[idx_min])
+                        print(min_dist)
                         return (self.Name_List[idx_min], min_dist)
                     else:
                         return ('No match detected', None)
@@ -119,3 +119,4 @@ class JoloRecognition:
         return "done"
 
 
+# JoloRecognition().Face_Train("FaceDetection/Known_Faces","FaceDetection/Model")

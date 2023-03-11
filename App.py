@@ -13,6 +13,9 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 # Upload folder status
 app.config['UPLOAD_FOLDER'] = 'Static/uploads'
 
+# upload images in known folder
+app.config['REGISTER_FACIAL'] = 'FaceDetection/Known_Faces/Art Lisboa'
+
 # accepted file type
 app.config['MIMETYPES'] = {'image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp.'}
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp'}
@@ -50,7 +53,26 @@ def upload_file():
         # invalid file
         return 'Invalid file type'
 
-
+@app.route("/facial-register", methods=['POST'])
+def facialRegister():
+    
+    file = request.files['file']
+    
+    # check file if exist
+    if file and allowed_file(file.filename):
+        
+        # check if file name is not malicious
+        filename = secure_filename(file.filename)
+        
+        # save the file
+        file.save(os.path.join(app.config['REGISTER_FACIAL'], filename))
+        
+        # return the result
+        return "Save successfully"
+    else:
+        
+        # invalid file
+        return 'Invalid file type'
 # check browser if server is running
 @app.route("/")
 def hello_world():
