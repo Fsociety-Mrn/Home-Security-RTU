@@ -1,11 +1,10 @@
 from flask import Flask, render_template,Response
-from FaceDetection.Jolo_Detection import facialDetection
+from FaceDetection.Jolo_Detection import facialDetection,facialRegister
 
 import cv2
 app = Flask(__name__)
 
-camera = cv2.VideoCapture(0)
-camera.set(4,1080)
+
 
 @app.route('/')
 def index():
@@ -16,12 +15,29 @@ def video_feed():
     
     # load camera
     camera = cv2.VideoCapture(0)
+    camera.set(4,1080)
     
     # Load face detector
     faceetector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     
     
     return Response(facialDetection(camera=camera, face_detector=faceetector), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
+
+@app.route('/registerFacial')
+def registerFacial():
+
+    camera = cv2.VideoCapture(0)
+    camera.set(4,1080)
+    
+# Load face detector
+    faceetector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    
+    return Response(facialRegister(camera=camera, face_detector=faceetector), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
