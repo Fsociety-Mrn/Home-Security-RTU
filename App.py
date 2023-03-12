@@ -38,7 +38,7 @@ def upload_file():
         filename = secure_filename(file.filename)
         
         # save the file
-        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         # read sending file via cv2
         file = cv2.imread(os.path.join(app.config['UPLOAD_FOLDER'], filename))
