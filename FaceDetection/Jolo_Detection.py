@@ -32,13 +32,13 @@ def facialRegister(face_recognition_url = url + '/facial-register',camera=None, 
             if timer >= 0.5:
                 
                 # Encode the frame as a JPEG image
-                img_encoded  = cv2.imencode('.png', frame)[1].tobytes()
+                img_encoded  = cv2.imencode('.png', frame, [cv2.IMWRITE_JPEG_QUALITY, 100])[1]
                 
                 # Send the JPEG image to the face recognition API
                 response = requests.post(
                     face_recognition_url, 
                     files={
-                            'file': (str(capture)+".png", BytesIO(img_encoded), 'image/png')
+                            'file': (str(capture)+".png", img_encoded.tobytes(), 'image/png')
                         })
                 
                 print(response.text)
@@ -95,13 +95,13 @@ def facialDetection(face_recognition_url = url + '/face-recognition', camera=Non
             if timer >= 0.8:
                         
                 # Encode the frame as a JPEG image
-                img_encoded  = cv2.imencode('.png', frame)[1].tobytes()
+                img_encoded  = cv2.imencode('.png', frame, [cv2.IMWRITE_JPEG_QUALITY, 100])[1]
                 
                 # Send the JPEG image to the face recognition API
                 response = requests.post(
                     face_recognition_url, 
                     files={
-                            'file': ('image.png', BytesIO(img_encoded), 'image/png')
+                            'file': ('image.png',img_encoded.tobytes(), 'image/png')
                         })
                 
                 # check if there is matches and if status code is 200 
