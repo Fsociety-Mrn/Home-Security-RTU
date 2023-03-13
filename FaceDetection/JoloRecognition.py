@@ -119,4 +119,4 @@ class JoloRecognition:
         return "done"
 
 
-# JoloRecognition().Face_Train("FaceDetection/Known_Faces","FaceDetection/Model")
+#JoloRecognition().Face_Train("FaceDetection/Known_Faces","FaceDetection/Model")

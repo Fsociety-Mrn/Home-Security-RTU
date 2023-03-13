@@ -14,7 +14,7 @@ app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = 'Static/uploads'
 
 # upload images in known folder
-app.config['REGISTER_FACIAL'] = 'FaceDetection/Known_Faces/Art Lisboa'
+app.config['REGISTER_FACIAL'] = 'FaceDetection/Known_Faces/Aj Roque'
 
 # accepted file type
 app.config['MIMETYPES'] = {'image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp.'}
