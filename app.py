@@ -54,12 +54,18 @@ def facial():
 
 @app.route('/submit', methods=['POST'])
 def submit_form():
+    
     first_name = request.form.get('firstname')
     last_name = request.form.get('lastname')
 
     api_url = "http://192.168.100.36:1030/name-register"
-    data = {"first_name": str(first_name), "last_name": str(last_name)}
-    headers = {"Content-Type": "application/json"}
+    data = {
+        "first_name": str(first_name), 
+        "last_name": str(last_name)
+        }
+    headers = {
+        "Content-Type": "application/json"
+        }
     
     response = requests.post(api_url, json=data, headers=headers)
     print(response.status_code)
