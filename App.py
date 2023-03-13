@@ -2,7 +2,7 @@ import os
 import cv2
 
 from werkzeug.utils import secure_filename
-from flask import Flask, request
+from flask import Flask, request,jsonify
 from FaceDetection.JoloRecognition import JoloRecognition as JL
 
 app = Flask(__name__) 
@@ -14,7 +14,7 @@ app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = 'Static/uploads'
 
 # upload images in known folder
-app.config['REGISTER_FACIAL'] = 'FaceDetection/Known_Faces/Aj Roque'
+app.config['REGISTER_FACIAL'] = 'FaceDetection/Known_Faces/'
 
 # accepted file type
 app.config['MIMETYPES'] = {'image/png', 'image/jpeg', 'image/gif', 'image/svg+xml', 'image/webp.'}
@@ -25,7 +25,9 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+#  API ROUTES  #
 
+# ================================ facial-recognition API ================================ #
 @app.route('/face-recognition', methods=['POST'])
 def upload_file():
     
@@ -53,27 +55,70 @@ def upload_file():
         # invalid file
         return 'Invalid file type'
 
-@app.route("/facial-register", methods=['POST'])
-def facialRegister():
+# ================================ Name register ================================ #
+@app.route('/name-register', methods=['POST']) 
+def name_register():
     
-    file = request.files['file']
+    # Get the first and last name from the request body
+    first_name = request.json.get('first_name', '')
+    last_name = request.json.get('last_name', '')
+
+    # Check that both first and last name are provided
+    if not first_name or not last_name:
+        return jsonify({'error': 'Both first and last name must be provided'}), 400
+
+    # Define the name of the folder you want to create
+    folder_name = f"{first_name} {last_name}"
+
+    # Define the path to the folder you want to create
+    path = f"FaceDetection/Known_Faces/{folder_name}"
+
+    # Check if the folder already exists
+    if os.path.exists(path):
+        return jsonify({'error': f"Folder {path} already exists"}), 400
+
+    # Create the folder using the os.makedirs() function
+    try:
+        os.makedirs(path)
+        app.config['REGISTER_FACIAL'] = path
+    except Exception as e:
+        return jsonify({'error': f"Failed to create folder: {e}"}), 500
+
+    # Return a success message
+    return jsonify({'message': f"Folder {path} created successfully"}), 201
+
+# ================================ facial-register API ================================ #
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/facial-register', methods=['POST'])
+def facial_register():
+    # Check if a file was uploaded
+    file = request.files.get('file')
+    if not file:
+        return jsonify({'error': 'No file in request'}), 400
+
+    # Check if the file is allowed
+    if not allowed_file(file.filename):
+        return jsonify({'error': 'Invalid file type. Allowed file types are png, jpeg, jpg, gif.'}), 400
+
+    # Save the file
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config['REGISTER_FACIAL'], filename)
+    file.save(file_path)
+
+    # Train the model if 20 images have been received
+    if len(os.listdir(app.config['REGISTER_FACIAL'])) == 20:
+        JL().Face_Train(Dataset_Folder=app.config['REGISTER_FACIAL'], location="FaceDetection/Model")
+        
+        return "Successfully trained"
     
-    # check file if exist
-    if file and allowed_file(file.filename):
-        
-        # check if file name is not malicious
-        filename = secure_filename(file.filename)
-        
-        # save the file
-        file.save(os.path.join(app.config['REGISTER_FACIAL'], filename))
-        
-        # return the result
-        return "Save successfully"
-    else:
-        
-        # invalid file
-        return 'Invalid file type'
-# check browser if server is running
+    # Return success message
+    return "File saved successfully"
+
+    
+# ================================ check browser if server is running ================================ #
 @app.route("/")
 def hello_world():
     return "This is  basic  server made from flask!"

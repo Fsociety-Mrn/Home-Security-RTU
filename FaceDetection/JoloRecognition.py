@@ -79,44 +79,50 @@ class JoloRecognition:
     
     # training from dataset
     def Face_Train(self, Dataset_Folder, location):
-        
-        def collate_fn(x):
-            return x[0]
-        
+        try:
+        # define a function to collate data
+            def collate_fn(x):
+                return x[0]
+
         # locate the dataset of known faces
-        Datasets = datasets.ImageFolder(Dataset_Folder)
-        
+            dataset = datasets.ImageFolder(Dataset_Folder)
+
         # load the folder name in dataset
-        label_names = {i:c for c,i in Datasets.class_to_idx.items()}
-        
+            label_names = {i: c for c, i in dataset.class_to_idx.items()}
+
         # load the dataset
-        loader = DataLoader(Datasets, collate_fn=collate_fn,pin_memory=True)
-        
-        Name_list = []
-        embedding_list = []
-        
-        for images, label in loader:
-            
-            print("Training...")    
-            with torch.no_grad():
-                
+            loader = DataLoader(dataset, collate_fn=collate_fn, pin_memory=True)
+
+        # create empty lists for storing embeddings and names
+            name_list = []
+            embedding_list = []
+
+            for images, label in loader:
+                print("Training...")
+                with torch.no_grad():
+
                 # for facial detection level 2 --- Using MTCNN model
-                face, prob = self.mtcnn(images,return_prob=True)
-                
-                # check if there  is detected face and has probability of 90%
-                if face is not None and prob > 0.90:
-                    
+                    face, prob = self.mtcnn(images, return_prob=True)
+
+                # check if there is a detected face and has probability of 90%
+                    if face is not None and prob > 0.90:
                     # calculate face distance
-                    emb =  self.facenet(face.unsqueeze(0))
-                    
-                    embedding_list.append(emb.detach())
-                    Name_list.append(label_names[label])
-                    
-        data = [embedding_list, Name_list]
-        
+                        emb = self.facenet(face.unsqueeze(0))
+
+                        embedding_list.append(emb.detach())
+                        name_list.append(label_names[label])
+
+            data = [embedding_list, name_list]
+
         # save the calculated face distance into data.pt
-        torch.save(data,location + '/data.pt')
-        return "done"
+            torch.save(data, location + '/data.pt')
+
+            return "Done training"
+
+        except Exception as e:
+            print(f"Error occurred while training the model: {str(e)}")
+            return "Error occurred while training the model"
 
 
-#JoloRecognition().Face_Train("FaceDetection/Known_Faces","FaceDetection/Model")
+
+# print(JoloRecognition().Face_Train("FaceDetection/Known_Faces","FaceDetection/Model"))

@@ -1,6 +1,6 @@
-facenet_pytorch==2.5.2
-Flask==2.2.2
-psutil==5.9.4
+opencv_python==4.6.0.66
 torch==1.13.1
 torchvision==0.14.1
 Werkzeug==2.2.2
+facenet_pytorch==2.5.2
+Flask==2.2.2
