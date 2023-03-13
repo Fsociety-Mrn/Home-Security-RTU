@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
+  <!-- CSS -->
+  <link rel="stylesheet" href="static/register.css"> 
+	<title>Registration Form</title>
+</head>
+<body>
 
+	<h1 id="h1">Registration Form</h1>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="static/style.css"> 
+	<form id="form" action="/submit" method="POST">
+		<label for="firstname">First Name:</label>
+		<input type="text" id="firstname" name="firstname" required><br>
 
-  </head>
-  
-  <body>
-    <h1>Facial Registration</h1>
-    <div id="video-wrapper">
-    
-      <img id="video" src="{{ url_for('registerFacial') }}" />
-    </div>
-    <div id="center">
-      <p>Please Align your face with the camera properly. </p>
-    </div>
+		<label for="lastname">Last Name:</label>
+		<input type="text" id="lastname" name="lastname" required><br>
 
-  </body>
+		<input type="submit" value="Submit">
+	</form>
+
+</body>
 </html>
