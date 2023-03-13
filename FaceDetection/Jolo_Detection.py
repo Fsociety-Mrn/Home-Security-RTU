@@ -1,14 +1,11 @@
 import cv2
 import requests
 import time
-
-from io import BytesIO
-
-url='http://192.168.100.36:1030'
+from flask import render_template
 
 # facial register
-def facialRegister(face_recognition_url = url + '/facial-register',camera=None, face_detector=None):
-
+def facialRegister(url='http://192.168.100.36:1030',camera=None, face_detector=None):
+    face_recognition_url = url + '/facial-register',
     timer = 0
     start_time = time.time()
 
@@ -41,7 +38,9 @@ def facialRegister(face_recognition_url = url + '/facial-register',camera=None, 
                             'file': (str(capture)+".png", img_encoded.tobytes(), 'image/png')
                         })
                 
-                print(response.text)
+                if response.text == "from flask import Flask, render_template,Response,request":
+                    return render_template("face.html")
+               
                 
                 timer = 0
                 start_time = time.time()
@@ -66,8 +65,8 @@ def facialRegister(face_recognition_url = url + '/facial-register',camera=None, 
 
 
 # facial recognition
-def facialDetection(face_recognition_url = url + '/face-recognition', camera=None, face_detector=None):
-    
+def facialDetection(url='http://192.168.100.36:1030', camera=None, face_detector=None):
+    face_recognition_url = url + '/face-recognition'
     R , G , B = 0,255,0
     Text = ""
     # Initialize the timer and the start time

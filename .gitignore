@@ -4,3 +4,4 @@
 /.vscode
 /__pycache__
 /FaceDetection/__pycache__
+/test.py
