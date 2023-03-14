@@ -1,16 +1,20 @@
 import cv2
 import requests
 import time
-from flask import render_template
+import webbrowser
+
+
+from flask import redirect,url_for
 
 # facial register
-def facialRegister(url='http://192.168.100.36:1030',camera=None, face_detector=None):
-    face_recognition_url = url + '/facial-register',
+def facialRegister(local=None,url=None,camera=None, face_detector=None):
+    face_recognition_url = url + '/facial-register'
+    
     timer = 0
     start_time = time.time()
 
     capture = 1
-    while capture <= 20:
+    while True:
         
         # Capture a frame from the camera
         ret, frame = camera.read()
@@ -31,17 +35,22 @@ def facialRegister(url='http://192.168.100.36:1030',camera=None, face_detector=N
                 # Encode the frame as a JPEG image
                 img_encoded  = cv2.imencode('.png', frame, [cv2.IMWRITE_JPEG_QUALITY, 100])[1]
                 
-                # Send the JPEG image to the face recognition API
+                # # Send the JPEG image to the face recognition API
                 response = requests.post(
                     face_recognition_url, 
                     files={
                             'file': (str(capture)+".png", img_encoded.tobytes(), 'image/png')
-                        })
-                
-                if response.text == "from flask import Flask, render_template,Response,request":
-                    return render_template("face.html")
+                        },
+                    timeout=10
+                    )
+
+
+                if response.text == "Successfully trained":
+                        # this should route to main page
+                    # print("http://" + str(local) + "/")
+
+                    return webbrowser.open("http://" + str(local) + "/")
                
-                
                 timer = 0
                 start_time = time.time()
                 capture +=1
@@ -59,9 +68,6 @@ def facialRegister(url='http://192.168.100.36:1030',camera=None, face_detector=N
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame_encoded.tobytes() + b'\r\n')
         
-
-
-
 
 
 # facial recognition
@@ -100,8 +106,9 @@ def facialDetection(url='http://192.168.100.36:1030', camera=None, face_detector
                 response = requests.post(
                     face_recognition_url, 
                     files={
-                            'file': ('image.png',img_encoded.tobytes(), 'image/png')
-                        })
+                        'file': ('image.png',img_encoded.tobytes(), 'image/png')
+                    },
+                    timeout=10)
                 
                 # check if there is matches and if status code is 200 
                 B, G, R = (255, 0, 0) if response.text == 'No match detected' else (0, 255, 0) if response.status_code == 200 else (0, 0, 255)
