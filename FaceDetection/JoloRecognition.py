@@ -117,7 +117,7 @@ class JoloRecognition:
         # save the calculated face distance into data.pt
             torch.save(data, location + '/data.pt')
 
-            return "Done training"
+            return "Successfully trained"
 
         except Exception as e:
             print(f"Error occurred while training the model: {str(e)}")
@@ -125,4 +125,4 @@ class JoloRecognition:
 
 
 
-# print(JoloRecognition().Face_Train("FaceDetection/Known_Faces","FaceDetection/Model"))
+#print(JoloRecognition().Face_Train("FaceDetection/Known_Faces","FaceDetection/Model"))

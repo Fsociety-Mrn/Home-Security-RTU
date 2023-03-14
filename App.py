@@ -55,7 +55,7 @@ def upload_file():
         # invalid file
         return 'Invalid file type'
 
-# ================================ Name register ================================ #
+# ================================ name-register API ================================ #
 @app.route('/name-register', methods=['POST']) 
 def name_register():
     
@@ -103,19 +103,23 @@ def facial_register():
     if not allowed_file(file.filename):
         return jsonify({'error': 'Invalid file type. Allowed file types are png, jpeg, jpg, gif.'}), 400
 
-    # Save the file
-    filename = secure_filename(file.filename)
-    file_path = os.path.join(app.config['REGISTER_FACIAL'], filename)
-    file.save(file_path)
 
     # Train the model if 20 images have been received
-    if len(os.listdir(app.config['REGISTER_FACIAL'])) == 20:
-        JL().Face_Train(Dataset_Folder=app.config['REGISTER_FACIAL'], location="FaceDetection/Model")
+
+    # Save the file
+    if not len(os.listdir(app.config['REGISTER_FACIAL'])) == 20:
         
-        return "Successfully trained"
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['REGISTER_FACIAL'], filename)
+        file.save(file_path)
+
+        return "File saved successfully"
+    
+    JL().Face_Train(Dataset_Folder='FaceDetection/Known_Faces',location="FaceDetection/Model")
+    return "Successfully trained" 
     
     # Return success message
-    return "File saved successfully"
+    
 
     
 # ================================ check browser if server is running ================================ #
