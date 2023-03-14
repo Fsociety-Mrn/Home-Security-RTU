@@ -3,39 +3,44 @@ import requests
 import time
 import webbrowser
 
-
 from flask import redirect,url_for
 
-# facial register
+# ============================== facial register ============================== #
 def facialRegister(local=None,url=None,camera=None, face_detector=None):
+    
+    # load facial register API endpoints
     face_recognition_url = url + '/facial-register'
     
     timer = 0
     start_time = time.time()
-
     capture = 1
+    
     while True:
         
         # Capture a frame from the camera
         ret, frame = camera.read()
         
+        # check if camera is working
         if not ret:
             break
-    
+     
         frame = cv2.flip(frame,1)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             
         # Detect faces in the frame
         faces = face_detector.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=20, minSize=(100, 100), flags=cv2.CASCADE_SCALE_IMAGE) 
-                    
+        
+        # check if there is 1 face detected
+        # NOTE: if more than 1 it wont detected and the timer will restart
         if len(faces) == 1:
             
+            # The frame capture is sent to API once every 30 seconds.
             if timer >= 0.5:
                 
                 # Encode the frame as a JPEG image
                 img_encoded  = cv2.imencode('.png', frame, [cv2.IMWRITE_JPEG_QUALITY, 100])[1]
                 
-                # # Send the JPEG image to the face recognition API
+                # Send the JPEG image to the face recognition API
                 response = requests.post(
                     face_recognition_url, 
                     files={
@@ -44,11 +49,9 @@ def facialRegister(local=None,url=None,camera=None, face_detector=None):
                     timeout=10
                     )
 
-
+                # if the respond is successfull trained
                 if response.text == "Successfully trained":
-                        # this should route to main page
-                    # print("http://" + str(local) + "/")
-
+                    # it will open new tab for main page
                     return webbrowser.open("http://" + str(local) + "/")
                
                 timer = 0
@@ -60,6 +63,7 @@ def facialRegister(local=None,url=None,camera=None, face_detector=None):
             
             # Get the coordinates of the face
             (x, y, w, h) = faces[0]
+            
             # Draw a rectangle around the face and pt text
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 2)    
         
@@ -70,11 +74,14 @@ def facialRegister(local=None,url=None,camera=None, face_detector=None):
         
 
 
-# facial recognition
+# ============================== facial recognition ============================== #
 def facialDetection(url='http://192.168.100.36:1030', camera=None, face_detector=None):
+    
+    # load facial recognition API endpoints
     face_recognition_url = url + '/face-recognition'
     R , G , B = 0,255,0
     Text = ""
+    
     # Initialize the timer and the start time
     timer = 0
     start_time = time.time()
