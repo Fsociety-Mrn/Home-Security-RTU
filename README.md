@@ -15,5 +15,8 @@ Note: sana maging okay sa installation
 
 ## page directory
 
-### "/" - Login Face
-### "/register" - Registration
+Login Face
+* http://<ip address>:3030/
+
+Registration
+* http://<ip address>:3030/register
