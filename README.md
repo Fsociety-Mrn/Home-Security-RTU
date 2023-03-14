@@ -3,16 +3,16 @@
 ### API ENDPOINTS URL
 
 check the server is running
-* http://<ip address>:1030/
+* http://ip_address:1030/
 
 face recognition API url 
-* http://<ip address>:1030/face-recognition
+* http://ip_address:1030/face-recognition
 
 name register API url
-* http://<ip address>:1030/name-register
+* http://ip_address:1030/name-register
 
 facial register API url
-* http://<ip address>:1030/facial-register
+* http://ip_address:1030/facial-register
 
 ### Install necessary packages via
 
