@@ -25,9 +25,13 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-#  API ROUTES  #
+# ************************************* API ROUTES ************************************* #  #
+
+
 
 # ================================ facial-recognition API ================================ #
+
+# face recognition api
 @app.route('/face-recognition', methods=['POST'])
 def upload_file():
     
@@ -55,7 +59,11 @@ def upload_file():
         # invalid file
         return 'Invalid file type'
 
+
+
 # ================================ name-register API ================================ #
+
+# name register endpoint
 @app.route('/name-register', methods=['POST']) 
 def name_register():
     
@@ -87,11 +95,16 @@ def name_register():
     # Return a success message
     return jsonify({'message': f"Folder {path} created successfully"}), 201
 
+
+
 # ================================ facial-register API ================================ #
+
+# check the file is valid
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# facial register endpoint
 @app.route('/facial-register', methods=['POST'])
 def facial_register():
     # Check if a file was uploaded
@@ -103,23 +116,18 @@ def facial_register():
     if not allowed_file(file.filename):
         return jsonify({'error': 'Invalid file type. Allowed file types are png, jpeg, jpg, gif.'}), 400
 
-
-    # Train the model if 20 images have been received
-
-    # Save the file
+    # save the images if the folder of user is not 20
     if not len(os.listdir(app.config['REGISTER_FACIAL'])) == 20:
         
+        # Save the file
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['REGISTER_FACIAL'], filename)
         file.save(file_path)
 
         return "File saved successfully"
     
-    JL().Face_Train(Dataset_Folder='FaceDetection/Known_Faces',location="FaceDetection/Model")
-    return "Successfully trained" 
-    
-    # Return success message
-    
+    # train the known_images it return if successful train or not
+    return JL().Face_Train(Dataset_Folder='FaceDetection/Known_Faces',location="FaceDetection/Model")
 
     
 # ================================ check browser if server is running ================================ #
