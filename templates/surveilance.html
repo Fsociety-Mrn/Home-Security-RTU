@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Surveilance</title>
+
+    <!-- CSS -->
+    <style>
+        #video-wrapper {
+            position: relative;
+            width: 50%;
+            height: auto;
+            margin: 0 auto;
+            max-width: 540px;
+          }
+          
+            #video {
+              width: 100%;
+              height: auto;
+              z-index:15
+            }
+            #canvas {
+              display: none;
+            }
+            #capture-button {
+              font-family: Segoe UI, Arial, sans-serif;
+              background-color: green;
+              color: white;
+              display: block;
+              margin: 0 auto;
+            }
+            #capture-button.enabled {
+              display: inline-block;
+            }
+            #center{
+              text-align: center;
+              margin-top: 20px;
+            }
+            h1{
+              text-align: center;
+            }
+          
+            #line {
+              position: absolute;
+              top: 50%;
+              left: 0;
+              right: 0;
+              height: 2px;
+              background-color: red;
+              pointer-events: none;
+              z-index: 1;
+            }
+            
+            #overlay{
+              position:absolute;
+              top:0;
+              width:100%;
+              text-align:center;
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              height: 100%;
+            }
+          
+            img {
+              display:inline-block;
+            }
+          
+            /* design of return btn */
+            button {
+              background-color: #4CAF50;
+              color: #fff;
+              padding: 10px 20px;
+              border: none;
+              border-radius: 3px;
+              cursor: pointer;
+              text-align: center; /* center the text inside the button */
+              margin: 0 auto; /* center the button itself */
+              display: block; /* make the button a block element */
+              display: flex;
+            }
+            .button-container {
+                display: flex; /* enable flexbox */
+                justify-content: center; /* center the buttons horizontally */
+              }
+            body{
+              background: linear-gradient(to top, #09203f 0%, #537895 100%);
+            }
+
+           
+              
+              
+              
+      </style>
+  </head>
+  
+  <body>
+    <h1 style="color:white;">Home CCTV</h1>
+    <div id="video-wrapper">
+      
+      <! -- cctv feed -->
+      <img id="video" src="{{ url_for('facial_register') }}" /> 
+      <canvas id="canvas"></canvas>
+      
+    </div>
+    <div class="button-container">      
+    <div id="center">
+      <p style="color:white;">This is a live feed.</p>
+      <a style="text-decoration: none; " href="/" class="label"><button style="display:inline-block;" id="return">Return</button></a>
+
+      <button style="display:inline-block;" id="capture">Capture</button>
+      <button style="display:inline-block; background:red;" onclick="sender();" id="capture">Alarm</button>
+    </div>
+</div>
+
+  </body>
+
+
+  <script>
+  
+    window.onload = function() {
+        var video = document.getElementById("video");
+        var canvas = document.getElementById("canvas");
+        var context = canvas.getContext('2d');
+        
+      
+        
+        // Capture canvas and open image in new tab
+        var captureBtn = document.getElementById("capture");
+        var openImgBtn = document.getElementById("open-image");
+        
+        captureBtn.addEventListener('click', function() {
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        });
+        
+        openImgBtn.addEventListener('click', function() {
+          var image = canvas.toDataURL("image/png");
+          var tab = window.open();
+          tab.document.write('<img src="' + image + '"/>');
+        });
+      }
+      
+  
+      // TELEGRAM CHATBOT
+
+      var telegram_bot_id = "6038531962:AAHmGRmFAXfSezff24artpEu7Ty5DOCqXtQ";
+      //chat id
+      var chat_id1 = 1120054024;
+      var chat_id2 = 5126679223;
+      var message;
+      
+      
+      
+      
+      var ready = function () {
+          message = "House Emergency Alarm";
+          message = "Message: " + message;
+      };
+      
+      
+      //SEND1
+      var sender = function () {
+          ready();
+          var settings = {
+              "async": true,
+              "crossDomain": true,
+              "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+              "method": "POST",
+              "headers": {
+                  "Content-Type": "application/json",
+                  "cache-control": "no-cache"
+              },
+              "data": JSON.stringify({
+                  "chat_id": chat_id1,
+                  "text": message
+              })
+          };
+          $.ajax(settings).done(function (response) {
+              console.log(response);
+          });
+      };
+      
+      //SEND2
+      var sender2 = function () {
+          ready();
+          var settings = {
+              "async": true,
+              "crossDomain": true,
+              "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+              "method": "POST",
+              "headers": {
+                  "Content-Type": "application/json",
+                  "cache-control": "no-cache"
+              },
+              "data": JSON.stringify({
+                  "chat_id": chat_id2,
+                  "text": message
+              })
+          };
+          $.ajax(settings).done(function (response) {
+              console.log(response);
+          });
+      };
+
+  </script>
+  
+</html>

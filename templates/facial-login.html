@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <!-- CSS -->
+    
+    <link rel="stylesheet" href="static/style.css"> 
+  </head>
+  
+  <body>
+    <h1 style="color:white;">Facial Login</h1>
+    <div id="video-wrapper">
+      
+      <! -- load url of facial recognition -->
+      <img id="video" src="{{ url_for('video_feed') }}" />
+      <canvas id="canvas"></canvas>
+      
+    </div>
+    <div id="center">
+      <p style="color:white;">Please Align your face with the camera angle.</p>
+      <a style="text-decoration: none;" href="/" class="label"><button id="return">Return</button>
+    </div>
+    
+
+  </body>
+</html>

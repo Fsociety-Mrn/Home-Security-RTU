@@ -11,14 +11,16 @@
 
 	<! -- action = submit the form data to "/submit" via POST -->
 	<form id="form" action="/submit" method="POST">
-		<label for="firstname">First Name:</label>
-		<input type="text" id="firstname" name="firstname" required><br>
-
-		<label for="lastname">Last Name:</label>
-		<input type="text" id="lastname" name="lastname" required><br>
-
+		<label for="fullname">Name (Surname, First Name MI):</label>
+		<input type="text" id="fullname" name="fullname" required><br>
 		<input type="submit" value="Submit">
+		
 	</form>
-
+	<div id="center">
+	<a href="/" class="label"><button style="display:inline-block;" id="return">Return</button></a>
+	<a href="/fourt_page" class="label"><button style="display:inline-block;" id="return">Finger Print</button></a>
+	
+	</div>
 </body>
+
 </html>

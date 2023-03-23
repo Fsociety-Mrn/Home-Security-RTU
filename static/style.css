@@ -1,10 +1,13 @@
 #video-wrapper {
-    position: relative;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    max-width: 640px;
-  }
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  max-width: 640px;
+  border-radius: 50%;
+  overflow: hidden; /* This line ensures the video doesn't overflow */
+}
+
   #video {
     width: 100%;
     height: auto;
@@ -55,4 +58,21 @@
 
   img {
     display:inline-block;
+  }
+
+  /* design of return btn */
+  button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center; /* center the text inside the button */
+    margin: 0 auto; /* center the button itself */
+    display: block; /* make the button a block element */
+  }
+
+  body{
+    background: linear-gradient(to top, #09203f 0%, #537895 100%);
   }

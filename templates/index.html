@@ -1,27 +1,44 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Webcam Capture Demo</title>
+	<head>
+		<title>Home Security</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/css/main.css" />
+		<noscript><link rel="stylesheet" href="static/css/noscript.css" /></noscript>
+		
+	</head>
+	<body class="is-preload">
+		<div id="wrapper">
+			<div id="bg"></div>
+			<div id="overlay"></div>
+			<div id="main">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="static/style.css"> 
+				<!-- Header -->
+					<header id="header">
+						<h1><img src="static/css/images/logo.png" alt="" width="150" height="150"/></h1>
+						<p>Security Chief &nbsp;&bull;&nbsp; AI &nbsp;&bull;&nbsp; Always keeping you secured</p>
+						<nav>
+							<a href="/second_page" class="label"><button id="login-btn">Log In</button></a>&nbsp;&nbsp;
+							<a href="/third_page" class="label"><button id="register-btn">Register</button></a>&nbsp;&nbsp;
+							<a href="/fifth_page" class="label"><button id="surveillance-btn">Surveillance</button></a>
+						</nav>
+					</header>
+					
 
-  </head>
-  
-  <body>
-    <h1>Face recognition demo Webcam</h1>
-    <div id="video-wrapper">
-      
-      <! -- load url of facial recognition -->
-      <img id="video" src="{{ url_for('video_feed') }}" />
-      <canvas id="canvas"></canvas>
-     
-    </div>
-    <div id="center">
-      <p>Please Align your face with the camera angle and press capture. </p>
-    </div>
-    
+				<!-- Footer -->
+					<footer id="footer">
+						<p>&copy; RTU Electrical Engineers. Design: <a href="">EE10</a>.</p>
+					</footer>
 
-  </body>
+			</div>
+		</div>
+		<script>
+            
+            window.onload = function() { 
+                document.body.classList.remove('is-preload'); }
+			window.ontouchmove = function() { return false; }
+			window.onorientationchange = function() { document.body.scrollTop = 0; } 
+		</script>    
+	</body>
 </html>

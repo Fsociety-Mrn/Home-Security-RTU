@@ -8,66 +8,67 @@ import requests
 # this is URL for API server
 # please change this if you connected to the other network
 
-url='http://192.168.100.36:1030'
 
 app = Flask(__name__)
 
 # NOTE:
 # uncomment this code if camera wont open in windows
-# camera = cv2.VideoCapture(0)
-# camera.set(4,1080)
+camera = cv2.VideoCapture(0)
+camera.set(4,1080)
     
 
 # ========================== Login ========================== #
 
-# load facial recognition html
+# load main page
 @app.route('/')
 def index():
     return render_template('index.html')
 
-#  load facial  recognition
+# define route for facial login
+@app.route('/second_page')
+def second_page():
+    return render_template('facial-login.html')
+
+#  load facial recognition
 @app.route('/video_feed')
 def video_feed():
 # comment this code if camera wont open on windows
     
     # load camera
-    camera = cv2.VideoCapture(0)
-    camera.set(4,1080)
+    # camera = cv2.VideoCapture(0)
+    # camera.set(4,1080)
     
     # Load face detector
     faceetector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     
-    return Response(facialDetection(url=url,camera=camera, face_detector=faceetector), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(facialDetection(camera=camera, face_detector=faceetector), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 # ========================== registration ========================== #
 
 # register name
-@app.route('/register')
-def register():
+@app.route('/third_page')
+def thirdpage():
     return render_template('name-register.html')
 
-# submit form
+# fingerprint register
+@app.route('/fourt_page')
+def fourtpage():
+    return render_template('finger-register.html')
+
+@app.route('/fifth_page')
+def fifthpage():
+    return render_template('surveilance.html')
+
+# submit form for name register
 @app.route('/submit', methods=['POST'])
 def submit_form():
     
-    # send data to API endpoints
-    response = requests.post(
-        url + "/name-register", 
-        json={ 
-            "first_name": str(request.form.get('firstname')), 
-            "last_name": str(request.form.get('lastname'))
-        }, 
-        headers={"Content-Type": "application/json"}
-    )
+    # get Full name
+    print(str(request.form.get('fullname')))
     
-    # check if status is created
-    if response.status_code == 201:
-        
-        # route to facial registration
-        return redirect(url_for('facial'))
+    # route to facial registration
+    return redirect(url_for('facial'))
          
-    return response.content
-
 # facial Registration
 @app.route('/facial')
 def facial():
@@ -79,29 +80,21 @@ def facial_register():
 # comment this code if camera wont open on windows
     
     # load camera
-    camera = cv2.VideoCapture(0)
-    camera.set(4,1080)
+    # camera = cv2.VideoCapture(0)
+    # camera.set(4,1080)
     
     # Load face detector
     faceetector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-    # local = load localhost  IP address
-    # url = server localhost IP address
     # camera = load camera
     # face_detecter = facial detection
-    return Response(
-        facialRegister(
-
-            local=str(request.remote_addr) + ":" + str(request.environ.get('SERVER_PORT')),
-            url=url,
-            camera=camera, 
-            face_detector=faceetector), 
-        mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(facialRegister(camera=camera, face_detector=faceetector),mimetype='multipart/x-mixed-replace; boundary=frame')
   
 
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
         debug=True,
-        port=3030)
+        port=5000)
+    
     
