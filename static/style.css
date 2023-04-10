@@ -1,16 +1,17 @@
 #video-wrapper {
   position: relative;
-  width: 100%;
+  width: auto;
   height: auto;
   margin: 0 auto;
   max-width: 640px;
+  max-height: 640px;
   border-radius: 50%;
   overflow: hidden; /* This line ensures the video doesn't overflow */
 }
 
   #video {
     width: 100%;
-    height: auto;
+    height: 100%;
     z-index:15
   }
   #canvas {
@@ -74,5 +75,5 @@
   }
 
   body{
-    background: linear-gradient(to top, #09203f 0%, #537895 100%);
+    background: #348cb2;
   }

@@ -19,10 +19,55 @@
       
     </div>
     <div id="center">
+      <h3 style="color:white;" id="result">Initialzing</h3>
       <p style="color:white;">Please Align your face with the camera angle.</p>
       <a style="text-decoration: none;" href="/" class="label"><button id="return">Return</button>
     </div>
+  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    
+    var dynamicVariable = "";
+
+    function updateDynamicVariable() {
+
+      $.ajax({
+        url: "/GET_FacialResult", // Replace with the URL of your Flask route
+        type: "GET", // Replace with the HTTP method of your Flask route
+        data: { /* Replace with any data you need to send to the server */ },
+        success: function(response) {
+          dynamicVariable = response; // Update the variable with the response from the server
+          $("#dynamic-variable").html(dynamicVariable); // Update the container element with the new value of the variable
+          
+          console.log(response)
+          //checkCapture(); //call this function in order to run routing
+        },
+        error: function(xhr) {
+          console.log(xhr.responseText); // Handle any errors that occur
+        }
+      });
+    }
+
+    // Use an interval to repeatedly check for the "Successfully trained" response
+  var intervalId = setInterval(
+    function() {
+
+      document.getElementById("result").innerHTML = dynamicVariable;
+
+      if (dynamicVariable === "Access Granted") {
+        clearInterval(intervalId); // Stop the interval
+        window.location.href = "{{ url_for('index') }}"; // Redirect to the main page
+      }
+
+      if (dynamicVariable === "Access Denied") {
+        clearInterval(intervalId); // Stop the interval
+        window.location.href = "{{ url_for('fourt_page') }}"; // Redirect to the main page
+      }
+    updateDynamicVariable(); // Call the updateDynamicVariable function again
+  }, 100); // Check every 2 seconds
     
 
-  </body>
+  </script>
+
 </html>

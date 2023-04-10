@@ -20,8 +20,8 @@
 						<p>Security Chief &nbsp;&bull;&nbsp; AI &nbsp;&bull;&nbsp; Always keeping you secured</p>
 						<nav>
 							<a href="/second_page" class="label"><button id="login-btn">Log In</button></a>&nbsp;&nbsp;
-							<a href="/third_page" class="label"><button id="register-btn">Register</button></a>&nbsp;&nbsp;
-							<a href="/fifth_page" class="label"><button id="surveillance-btn">Surveillance</button></a>
+							<a class="label"><button onclick="modal2();" id="mpopupLink2">Register</button></a>&nbsp;&nbsp;
+							<a class="label"><button onclick="modal1();" id="mpopupLink">Surveillance</button></a>
 						</nav>
 					</header>
 					
@@ -31,10 +31,129 @@
 						<p>&copy; RTU Electrical Engineers. Design: <a href="">EE10</a>.</p>
 					</footer>
 
+					<!-- Modal popup box -->
+					<div id="mpopupBox" class="mpopup">
+						<!-- Modal content -->
+							<div class="modal-content">
+								<div class="modal-header">
+									<span class="close">×</span>
+									<h2 style="color:white;">PASSCODE</h2>
+							   </div>
+								<div class="modal-body">
+									<input type="passcode" id="passcode" name="passcode"><br>
+									 </div>
+						<div class="modal-footer">
+							<button id="enter" type="button" class="btn btn-primary">Enter</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Modal popup box -->
+					<div id="mpopupBox2" class="mpopup">
+						<!-- Modal content -->
+							<div class="modal-content">
+								<div class="modal-header">
+									<span class="close2">×</span>
+									<h2 style="color:white;">PASSCODE</h2>
+							   </div>
+								<div class="modal-body">
+									<input type="passcode" id="passcode2" name="passcode2"><br>
+									 </div>
+						<div class="modal-footer">
+							<button id="enter2" type="button" class="btn btn-primary">Enter</button>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 		<script>
-            
+            // password
+			const enterBtn = document.getElementById("enter");
+			const passcodeInput = document.getElementById("passcode");
+			const passcodeInput2 = document.getElementById("passcode2");
+			const enterBtn2 = document.getElementById("enter2");
+
+			enterBtn.addEventListener("click", function() {
+  			const passcodeValue = passcodeInput.value;
+  			if (passcodeValue === "2244") {
+   				 window.location.href = "/sixth_page";
+  			} 
+			else {
+    			alert("Incorrect passcode!");
+				passcodeInput.value = ""; // Clears the contents of the input field
+ 			 }
+			});
+
+			enterBtn2.addEventListener("click", function() {
+				const passcodeValue = passcodeInput2.value;
+				if (passcodeValue === "2244") {
+				  window.location.href = "/third_page";
+				} 
+				else {
+				  alert("Incorrect passcode!");
+				  passcodeInput.value = "";
+				}
+			  });
+
+			
+
+			function modal1(){
+				// Select modal
+				var mpopup = document.getElementById('mpopupBox');
+    
+				// Select trigger link
+				var mpLink = document.getElementById("mpopupLink");
+				
+				// Select close action element
+				var close = document.getElementsByClassName("close")[0];
+				
+				// Open modal once the link is clicked
+				mpLink.onclick = function() {
+					mpopup.style.display = "block";
+				};
+				
+				// Close modal once close element is clicked
+				close.onclick = function() {
+					mpopup.style.display = "none";
+				};
+				
+				// Close modal when user clicks outside of the modal box
+				window.onclick = function(event) {
+					if (event.target == mpopup) {
+						mpopup.style.display = "none";
+					}
+				};
+			}
+
+			function modal2(){
+				// Select modal
+				var mpopup = document.getElementById('mpopupBox2');
+    
+				// Select trigger link
+				var mpLink = document.getElementById("mpopupLink2");
+				
+				// Select close action element
+				var close = document.getElementsByClassName("close2")[0];
+				
+				// Open modal once the link is clicked
+				mpLink.onclick = function() {
+					mpopup.style.display = "block";
+				};
+				
+				// Close modal once close element is clicked
+				close.onclick = function() {
+					mpopup.style.display = "none";
+				};
+				
+				// Close modal when user clicks outside of the modal box
+				window.onclick = function(event) {
+					if (event.target == mpopup) {
+						mpopup.style.display = "none";
+					}
+				};
+			}
+
             window.onload = function() { 
                 document.body.classList.remove('is-preload'); }
 			window.ontouchmove = function() { return false; }

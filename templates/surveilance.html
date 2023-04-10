@@ -85,7 +85,7 @@
                 justify-content: center; /* center the buttons horizontally */
               }
             body{
-              background: linear-gradient(to top, #09203f 0%, #537895 100%);
+              background: #348cb2;
             }
 
            
@@ -100,7 +100,7 @@
     <div id="video-wrapper">
       
       <! -- cctv feed -->
-      <img id="video" src="{{ url_for('facial_register') }}" /> 
+      <img id="video" src="{{ url_for('surveilance_camera') }}" /> 
       <canvas id="canvas"></canvas>
       
     </div>
@@ -110,7 +110,7 @@
       <a style="text-decoration: none; " href="/" class="label"><button style="display:inline-block;" id="return">Return</button></a>
 
       <button style="display:inline-block;" id="capture">Capture</button>
-      <button style="display:inline-block; background:red;" onclick="sender();" id="capture">Alarm</button>
+      <button style="display:inline-block; background:red;" onclick="sender(); sender2();" id="capture">Alarm</button>
     </div>
 </div>
 
@@ -146,8 +146,8 @@
 
       var telegram_bot_id = "6038531962:AAHmGRmFAXfSezff24artpEu7Ty5DOCqXtQ";
       //chat id
-      var chat_id1 = 1120054024;
-      var chat_id2 = 5126679223;
+      var chat_id1 = 1230207271;
+      var chat_id2 = 1282718818;
       var message;
       
       
