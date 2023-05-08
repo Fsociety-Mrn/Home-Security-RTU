@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Home Security</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/css/main.css" />
+		<noscript><link rel="stylesheet" href="static/css/noscript.css" /></noscript>
+		
+	</head>
+	<body class="is-preload">
+		<div id="wrapper">
+			<div id="bg"></div>
+			<div id="overlay"></div>
+			<div id="main">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><img src="static/css/images/logo.png" alt="" width="150" height="150"/></h1>
+						<p>Security Chief &nbsp;&bull;&nbsp; AI &nbsp;&bull;&nbsp; Always keeping you secured</p>
+						<nav>
+							<a href="/second_page" class="label"><button id="login-btn">Log In</button></a>&nbsp;&nbsp;
+							<a class="label"><button onclick="modal2();" id="mpopupLink2">Register</button></a>&nbsp;&nbsp;
+							<a class="label"><button onclick="modal();" id="mpopupLink">Surveillance</button></a>
+						</nav>
+					</header>
+					
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p>&copy; RTU Electrical Engineers. Design: <a href="">EE10</a>.</p>
+					</footer>
+
+					<!-- Modal popup box -->
+					<div id="mpopupBox" class="mpopup">
+						<!-- Modal content -->
+							<div class="modal-content">
+								<div class="modal-header">
+									<span class="close">×</span>
+									<h2 style="color:white;">PASSCODE</h2>
+							   </div>
+								<div class="modal-body">
+									<input type="password" id="passcode" name="passcode"><br>
+									 </div>
+						<div class="modal-footer">
+							<button id="enter" type="button" class="btn btn-primary">Enter</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Modal popup box -->
+					<div id="mpopupBox2" class="mpopup">
+						<!-- Modal content -->
+							<div class="modal-content">
+								<div class="modal-header">
+									<span class="close2">×</span>
+									<h2 style="color:white;">PASSCODE</h2>
+							   </div>
+								<div class="modal-body">
+									<input type="password" id="passcode2" name="passcode2"><br>
+									 </div>
+						<div class="modal-footer">
+							<button id="enter2" type="button" class="btn btn-primary">Enter</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script>
+            
+            // TELEGRAM CHATBOT
+            var telegram_bot_id = "6038531962:AAHmGRmFAXfSezff24artpEu7Ty5DOCqXtQ";
+            
+            //chat id
+            
+            const chat_id1 = 1509744956;
+            const chat_id2 = 1102282141;
+            const chat_id3 = 1240058920;
+            const chat_id4 = 1282718818;
+            const chat_id5 = "";
+            const chat_id6 = "";
+          
+            var IDs = [
+                 chat_id1,
+                 chat_id2,
+                 chat_id3,
+                 chat_id4,
+                 chat_id5,
+                 chat_id6
+                ];
+		
+            // password
+			const enterBtn = document.getElementById("enter");
+			const passcodeInput = document.getElementById("passcode");
+
+			const passcodeInput2 = document.getElementById("passcode2");
+			const enterBtn2 = document.getElementById("enter2");
+
+			enterBtn.addEventListener("click", function() {
+
+  			const passcodeValue = passcodeInput.value;
+
+  			if (passcodeValue === "2244") {
+   				 window.location.href = "/sixth_page";
+  			} 
+			else {
+    			alert("Incorrect passcode!");
+				passcodeInput.value = ""; // Clears the contents of the input field
+ 			 }
+
+			});
+
+			enterBtn2.addEventListener("click", function() {
+
+				const passcodeValue = passcodeInput2.value;
+
+				if (passcodeValue === "2244") {
+				  window.location.href = "/third_page";
+				} 
+				else {
+				  alert("Incorrect passcode!");
+				  passcodeInput2.value = "";
+				}
+
+			  });
+
+			
+
+			function modal(){
+				// Select modal
+				var mpopup = document.getElementById('mpopupBox');
+    
+				// Select trigger link
+				var mpLink = document.getElementById("mpopupLink");
+				
+				// Select close action element
+				var close = document.getElementsByClassName("close")[0];
+				
+				// Open modal once the link is clicked
+				mpLink.onclick = function() {
+					mpopup.style.display = "flex";
+				};
+				
+				// Close modal once close element is clicked
+				close.onclick = function() {
+
+					passcodeInput.value = "";
+					mpopup.style.display = "none";
+				};
+				
+				// Close modal when user clicks outside of the modal box
+				window.onclick = function(event) {
+					if (event.target == mpopup) {
+
+						passcodeInput.value = "";
+						mpopup.style.display = "none";
+					}
+				};
+			}
+
+			function modal2(){
+				
+				// Select modal
+				var mpopup = document.getElementById('mpopupBox2');
+    
+				// Select trigger link
+				var mpLink = document.getElementById("mpopupLink2");
+				
+				// Select close action element
+				var close = document.getElementsByClassName("close2")[0];
+				
+				// Open modal once the link is clicked
+				mpLink.onclick = function() {
+					mpopup.style.display = "flex";
+				};
+				
+				// Close modal once close element is clicked
+				close.onclick = function() {
+
+					passcodeInput2.value = "";
+					mpopup.style.display = "none";
+				};
+				
+				// Close modal when user clicks outside of the modal box
+				window.onclick = function(event) {
+					if (event.target == mpopup) {
+
+						passcodeInput2.value = "";
+						mpopup.style.display = "none";
+					}
+				};
+			}
+
+            window.onload = function() { 
+                document.body.classList.remove('is-preload'); }
+			window.ontouchmove = function() { return false; }
+			window.onorientationchange = function() { document.body.scrollTop = 0; } 
+			
+			
+			
+			//SEND SOS
+      var sendSOS = function (chatID) {
+      
+          // FOR BUTTOn buzzer
+          valueX = true
+          
+          var settings = {
+              "async": true,
+              "crossDomain": true,
+              "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+              "method": "POST",
+              "headers": {
+                  "Content-Type": "application/json",
+                  "cache-control": "no-cache"
+              },
+              "data": JSON.stringify({
+                  "chat_id": chatID,
+                  "text": "Emergency! HELP! HELP! HELP!"
+              })
+          };
+          $.ajax(settings).done(function (response) {
+              console.log(response);
+          });
+         };
+			
+			
+			var intervalId = setInterval(function(){
+              
+              // for force entry
+			  $.ajax({
+                url: "/alert", // Replace with the URL of your Flask route
+                type: "GET", // Replace with the HTTP method of your Flask route
+                data: { /* Replace with any data you need to send to the server */ },
+                success: function(response) {
+                   
+                  console.log(response[0].message)
+                  if (response[0].warning){
+                      for (var i=0; i<IDs.length; i++){
+                          sendSOS(IDs[i]);
+                      }
+                  }
+             
+                },
+                error: function(xhr) {
+                  console.log(xhr.responseText); // Handle any errors that occur
+                }
+              });
+              
+              //for Emergency
+              $.ajax({
+                url: "/emergencyButton", // Replace with the URL of your Flask route
+                type: "GET", // Replace with the HTTP method of your Flask route
+                data: { /* Replace with any data you need to send to the server */ },
+                success: function(response) {
+                   
+                  console.log(response[0].message)
+                  if (response[0].warning){
+                      for (var i=0; i<IDs.length; i++){
+                          sendSOS(IDs[i]);
+                      }
+                  }
+             
+                },
+                error: function(xhr) {
+                  console.log(xhr.responseText); // Handle any errors that occur
+                }
+              });
+              
+			},1000)
+			
+		</script>    
+	</body>
+</html>
