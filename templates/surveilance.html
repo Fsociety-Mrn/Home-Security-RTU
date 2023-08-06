@@ -84,10 +84,20 @@
                 display: flex; /* enable flexbox */
                 justify-content: center; /* center the buttons horizontally */
               }
+            .button-container-ito {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
             body{
               background: #348cb2;
             }
-
+        .button-row div {
+            display: inline-block;
+        }
            
               
               
@@ -100,17 +110,47 @@
     <div id="video-wrapper">
       
       <! -- cctv feed -->
-      <img id="video" src="{{ url_for('surveilance_camera') }}" /> 
-      <canvas id="canvas"></canvas>
+      <!-- <img id="video" src="{{ url_for('surveilance_camera') }}" />  -->
+      <img id="video" src="" /> 
+      <canvas id="canvas" width="1200" height="720" >camera is turn Off</canvas>
       
     </div>
     <div class="button-container">      
     <div id="center">
-      <p style="color:white;">This is a live feed.</p>
-      <a style="text-decoration: none; " href="/" class="label"><button style="display:inline-block;" id="return">Return</button></a>
 
-      <button style="display:inline-block;" id="capture">Capture</button>
-      <button style="display:inline-block; background:red;" onclick="sender(); sender2();" id="capture">Alarm</button>
+
+      <!-- for turn on and off the camera -->
+      <div class="button-container-ito">
+        <p id="statusCamera" style="color:white;">camera is turn Off</p>
+
+        <button style="display:inline-block;" id="turnOn" onclick="turnOnCamera()">Turn On camera</button>
+        <button style="display:none; background:red;" id="turnOff" onclick="turnOffCamera()">Turn Off camera</button>
+  
+      </div>
+
+      <div class="button-utility-ito">
+      <!-- open -->
+        <button style="display:inline-block;" onclick="openDoor()">Open the door</button>
+      
+      <!-- capture the camera -->
+        <button style="display:inline-block;" id="capture" onclick="sendButtonImage()">Capture</button>
+      
+      <!-- alarming -->
+        <button style="display:inline-block; 
+        background:red;" onclick="sender0(); sender(); sender2(); sender3(); sender4();" id="capture">Alarm</button>
+        
+      <!-- turn off the alarm  -->
+        <button style="display:inline-block; " onclick="buzzerTurnOff()">Turn off the Alarm</button>
+    
+    </div>
+
+    <!-- back to main menu -->
+    <div style="margin: 10px;">
+      <a style="text-decoration: none; " href="/" class="label"><button style="display:inline-block;" id="return">Return</button></a>
+    </div>
+    
+  
+
     </div>
 </div>
 
@@ -118,8 +158,92 @@
 
 
   <script>
+    
+    <!-- camera -->
+    var videoElement = document.getElementById('video');
+    var turnOnButton = document.getElementById('turnOn');
+    var turnOffButton = document.getElementById('turnOff');
+    var statusCamera = document.getElementById('statusCamera');
+
+    function turnOnCamera(){
+      document.getElementById('statusCamera').innerHTML  = "This is a live feed."
+
+      videoElement.src = "{{ url_for('surveilance_camera') }}";
+      turnOnButton.style.display = 'none'; //hide this button
+      turnOffButton.style.display = 'inline-block'; ///show this button
+   
+      
+    }
+
+    function turnOffCamera(){
+      document.getElementById('statusCamera').innerHTML  = "camera is turn Off"
+
+   
+      videoElement.src = "";
+      turnOnButton.style.display = 'inline-block'; //show this button
+      turnOffButton.style.display = 'none'; ///hide this button
+      
+    
+      
+    }
+    let valueX = false
+    // pang turn off ng buzzer 
+    function buzzerTurnOff(){
+      valueX = false;
+      $.ajax({
+        url: "/offBuzzer",
+         type: "GET",
+         dataType: "json",
+         success: function(response) {
+             console.log(response); //get result
+         
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+         console.log(textStatus, errorThrown);
+        }
+      });
+
+    }
+
+      
+      
+      // TELEGRAM CHATBOT
+
+      var telegram_bot_id = "6038531962:AAHmGRmFAXfSezff24artpEu7Ty5DOCqXtQ";
+      //chat id
+      
+      const chat_id1 = 1509744956;
+      const chat_id2 = 1102282141;
+      const chat_id3 = 1240058920;
+      const chat_id4 = 1282718818;
+      const HelloFriend =5234992922;
+          
+      var IDs = [
+                 HelloFriend,
+                 chat_id1,
+                 chat_id2,
+                 chat_id3,
+                 chat_id4
+                ];
+
+      var id1 = 1509744956;
+      var id2 = 1102282141;
+      var id3 = 1240058920;
+      var id4 = 1282718818;
+      
+      var message;
+      
+      //capture images 
+     
+      var sendButtonImage = function(){
+          for (var i = 0; i < IDs.length; i++){
+              sendImages(IDs[i]);
+          }
+      }
+      
+      var sendImages = function(chatIDs) {
+    
   
-    window.onload = function() {
         var video = document.getElementById("video");
         var canvas = document.getElementById("canvas");
         var context = canvas.getContext('2d');
@@ -130,34 +254,124 @@
         var captureBtn = document.getElementById("capture");
         var openImgBtn = document.getElementById("open-image");
         
-        captureBtn.addEventListener('click', function() {
-          context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        });
+        // capture images
         
-        openImgBtn.addEventListener('click', function() {
-          var image = canvas.toDataURL("image/png");
-          var tab = window.open();
-          tab.document.write('<img src="' + image + '"/>');
-        });
+
+            // Draw the video frame on the canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert the canvas to a blob object
+            canvas.toBlob(function(blob) {
+
+              // Create a FormData object to send the image
+              var formData = new FormData();
+
+            // format for sending Images
+              formData.append('chat_id', chatIDs);
+              formData.append('photo', blob, 'photo.jpg');
+              formData.append('caption', 'Intruder');
+
+            // Send the image and caption to the Telegram Bot API using Ajax
+              $.ajax({
+                url: 'https://api.telegram.org/bot' + telegram_bot_id + '/sendPhoto',
+                data: formData,
+                method: 'POST',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                  console.log(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  console.log(textStatus, errorThrown);
+                }
+              });
+          }, 'image/jpeg', 0.75);
       }
       
-  
-      // TELEGRAM CHATBOT
+      
+       // open the Door
+    var openDoor = function (){
+                console.log("shit");                                                                                                                                                                                    
+         $.ajax({
+               url: "/high",
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    console.log(response); //get result
+                
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+       
+            }
+        });
+        
+    };
 
-      var telegram_bot_id = "6038531962:AAHmGRmFAXfSezff24artpEu7Ty5DOCqXtQ";
-      //chat id
-      var chat_id1 = 1230207271;
-      var chat_id2 = 1282718818;
-      var message;
-      
-      
-      
       
       var ready = function () {
           message = "House Emergency Alarm";
           message = "Message: " + message;
       };
       
+      //SEND 0
+      var senderS = function (chatID) {
+      
+          // FOR BUTTOn buzzer
+          valueX = true;
+         // console.log(valueX);
+          
+          
+          ready();
+          var settings = {
+              "async": true,
+              "crossDomain": true,
+              "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+              "method": "POST",
+              "headers": {
+                  "Content-Type": "application/json",
+                  "cache-control": "no-cache"
+              },
+              "data": JSON.stringify({
+                  "chat_id": chatID,
+                  "text": message
+              })
+          };
+          $.ajax(settings).done(function (response) {
+              console.log(response);
+              
+          });
+          
+      };
+      
+      
+      // for buzzer sounds
+      var intervalId = setInterval(function(){
+      
+          if (valueX){
+              //for Emergency
+              $.ajax({
+                url: "/alarming", // Replace with the URL of your Flask route
+                type: "GET", // Replace with the HTTP method of your Flask route
+                data: { /* Replace with any data you need to send to the server */ },
+                success: function(response) {
+                   
+                  console.log(response[0].message)
+             
+                },
+                error: function(xhr) {
+                  console.log(xhr.responseText); // Handle any errors that occur
+                }
+              });
+           }
+      },1000)
+      
+      //sendnder
+      var sender0 = function(){
+         for (var i=0; i < 2; i++){
+             senderS(IDs[i]);
+         }
+      }
       
       //SEND1
       var sender = function () {
@@ -195,6 +409,47 @@
               },
               "data": JSON.stringify({
                   "chat_id": chat_id2,
+                  "text": message
+              })
+          };
+          $.ajax(settings).done(function (response) {
+              console.log(response);
+          });
+      };
+      //SEND3
+      var sender3 = function () {
+          ready();
+          var settings = {
+              "async": true,
+              "crossDomain": true,
+              "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+              "method": "POST",
+              "headers": {
+                  "Content-Type": "application/json",
+                  "cache-control": "no-cache"
+              },
+              "data": JSON.stringify({
+                  "chat_id": chat_id3,
+                  "text": message
+              })
+          };
+          $.ajax(settings).done(function (response) {
+              console.log(response);
+          });
+      };//SEND4
+      var sender4 = function () {
+          ready();
+          var settings = {
+              "async": true,
+              "crossDomain": true,
+              "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+              "method": "POST",
+              "headers": {
+                  "Content-Type": "application/json",
+                  "cache-control": "no-cache"
+              },
+              "data": JSON.stringify({
+                  "chat_id": chat_id4,
                   "text": message
               })
           };

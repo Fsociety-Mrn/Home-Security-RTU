@@ -1,7 +1,5 @@
-/Model/InceptionResnetV1_mobile.ptl
-/Known_Faces/Ariel_Sharon
-/node_modules
-/.vscode
-/__pycache__
 /FaceDetection/__pycache__
 /test.py
+/templates/facial-training.html
+/Facerecognition/__pycache__
+/FaceDetection

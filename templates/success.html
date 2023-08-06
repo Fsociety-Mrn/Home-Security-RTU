@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Security</title>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+	<style>
+        
+		body {
+			background-color: #348cb2;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+		
+		h1 {
+			color: white;
+			font-family: Segoe UI;
+			font-size: 3rem;
+			text-align: center;
+		}
+
+		button {
+			background-color: white;
+			color: #348cb2;
+			padding: 10px 20px;
+			border-radius: 5px;
+			border: none;
+			font-size: 1rem;
+			font-family: Segoe UI;
+			cursor: pointer;
+			margin-top: 20px;
+		}
+	</style>
+</head>
+<body>
+	<h1 class="animate__animated animate__backInDown">Successful Login</h1>
+	<button onclick="back();">Go back</button>
+    
+</body>
+<script>
+    function back(){
+        window.location.href = "{{ url_for('index') }}";
+    }
+
+    var intervalId = setInterval(back(), 10000);
+</script>
+</html>

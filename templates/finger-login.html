@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Finger Print Registration</title>
+
+    <!-- CSS -->
+    
+    <link rel="stylesheet" href="static/design.css"> 
+    
+  </head>
+  
+  <body>
+    <h1 style="color: white;">Finger Print Register</h1>
+        <div class="scanner">
+        <div class="fingarprint">
+        </div>
+        <h3 id="FingerResult">Please put your finger to scan</h3>
+        </div>
+        <a style="text-decoration: none;"  class="label"><button onclick="getFinger();" id="return">Login</button></a>
+    
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+
+    // TELEGRAM CHATBOT
+    var telegram_bot_id = "6038531962:AAHmGRmFAXfSezff24artpEu7Ty5DOCqXtQ";
+
+    //chat id
+    const HelloFriend = 5234992922;
+    const carlFelix = 1120054024;
+    const chat_id1 = 1509744956;
+    const chat_id2 = 1102282141;
+    const chat_id3 = 1240058920;
+    const chat_id4 = 1282718818;
+    const test = 5014623525;
+            
+    /* var IDs = [HelloFriend,
+                   carlFelix,
+                   chat_id1,
+                   chat_id2,
+                   chat_id3,
+                   chat_id4
+                ]; */
+
+    var IDs = [ HelloFriend,
+                    carlFelix,
+                    test
+                  ];
+
+    var ready = function () {
+        message = "House Emergency Alarm";
+        message = "Message: " + message;
+    };
+
+    var senderTGSmS = function (chatID) {
+
+        ready();
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+             "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json",
+                "cache-control": "no-cache"
+            },
+            "data": JSON.stringify({
+                "chat_id": chatID,
+                "text": message
+            })
+        };
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+        });
+    }    
+
+
+  // function for get Fingers
+      function getFinger(){
+      
+          // change the status of the text
+          document.getElementById("FingerResult").innerHTML = "Scanning..";
+          
+          $.ajax({
+               url: "/fingerlogin",
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    console.log(response); //get result
+                    
+                    if (response[0].error === true){
+                        // if error is True
+                        document.getElementById("FingerResult").innerHTML = response[0].message;
+
+                        for (var i=0; i<=IDs.length; i++){
+                          senderTGSmS(IDs[i])
+                        }
+                        
+                    }else{
+                        // route to  main page if success
+                        document.getElementById("FingerResult").innerHTML = response[0].message;
+                        window.location.href = "{{ url_for('index') }}";
+                    }
+                
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+       
+            }
+        });
+
+      }
+      
+    // check function
+    
+    // var intervalId = setInterval(getFinger, 3000);
+    
+    
+    
+  
+  </script>
+  </body>
+  </html>
