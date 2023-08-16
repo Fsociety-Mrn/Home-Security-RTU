@@ -32,31 +32,31 @@ from Facerecognition.Face_Recognition import Face_Recognition as Jolo
 import cv2
 import os
 import time
-import adafruit_fingerprint
-import serial
-import RPi.GPIO as GPIO
+# import adafruit_fingerprint
+# import serial
+# import RPi.GPIO as GPIO
 import threading
 
 # Set up GPIO
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
+# GPIO.setmode(GPIO.BCM)
+# GPIO.setwarnings(False)
 
-# seplenoid lock
-GPIO.setup(24, GPIO.OUT, initial=GPIO.LOW)
+# # seplenoid lock
+# GPIO.setup(24, GPIO.OUT, initial=GPIO.LOW)
 
-# Ultrasonic Sensor
+# # Ultrasonic Sensor
 
-# TRIGGER
-GPIO.setup(21, GPIO.OUT)
+# # TRIGGER
+# GPIO.setup(21, GPIO.OUT)
 
-# ECHO
-GPIO.setup(20, GPIO.IN)
+# # ECHO
+# GPIO.setup(20, GPIO.IN)
 
-# buzzer
-GPIO.setup(6, GPIO.OUT, initial=GPIO.LOW)
+# # buzzer
+# GPIO.setup(6, GPIO.OUT, initial=GPIO.LOW)
 
-# Buton
-GPIO.setup(5, GPIO.IN,pull_up_down=GPIO.PUD_UP)
+# # Buton
+# GPIO.setup(5, GPIO.IN,pull_up_down=GPIO.PUD_UP)
 
 app = Flask(__name__)
 
@@ -88,12 +88,12 @@ finger_status = ""
 
 
 
-uart = serial.Serial('/dev/ttyS0', baudrate=57600, timeout=1)
+# uart = serial.Serial('/dev/ttyS0', baudrate=57600, timeout=1)
 
-finger = adafruit_fingerprint.Adafruit_Fingerprint(uart)
+# finger = adafruit_fingerprint.Adafruit_Fingerprint(uart)
 
 @app.route('/successLogin')
-def seventh_page():
+def successLogin():
     
     return render_template('success.html')
 # ========================== Login ========================== #
@@ -102,7 +102,7 @@ def seventh_page():
 @app.route("/alarming", methods=['GET'])
 def alarming():
     # buzzer()
-    GPIO.output(6,GPIO.HIGH)
+    # GPIO.output(6,GPIO.HIGH)
 
     return jsonify(
             {
@@ -112,63 +112,77 @@ def alarming():
     
 @app.route("/emergencyButton", methods=['GET'])
 def emergency():
-    if GPIO.input(5):
-        GPIO.output(6,GPIO.HIGH)
+    # if GPIO.input(5):
+    #     GPIO.output(6,GPIO.HIGH)
 
-        return jsonify(
-            {
-                'message': "Emergency!",
-                'warning': True
-            },200)
-    else:
+    #     return jsonify(
+    #         {
+    #             'message': "Emergency!",
+    #             'warning': True
+    #         },200)
+    # else:
      
-        return jsonify(
-            {
-                'message': "Not Emegergency!",
-                'warning': False
-            },200)
+    #     return jsonify(
+    #         {
+    #             'message': "Not Emegergency!",
+    #             'warning': False
+    #         },200)
+        
+    return jsonify(
+        {
+            'message': "Not Emegergency!",
+            'warning': False
+        },200)        
 
 @app.route("/alert", methods=['GET'])
 def alarm():
     
-    GPIO.output(21,False)
-    time.sleep(0.5)
-    GPIO.output(21,True)
-    time.sleep(0.00001)
-    GPIO.output(21,False)
-    
-    pulse_start,pulse_end = 0,0
-    while GPIO.input(20) == 0:
-        pulse_start = time.time()
-        
-    while GPIO.input(20) == 1:
-        pulse_end = time.time()
-        
-    distance = (pulse_end-pulse_start) * 17150
-    inches = round(distance / 2.54, 1)
-    
-    
-    print(inches)
-    
-    if inches < 10.0:
-        GPIO.output(6,GPIO.HIGH)
-
-        
         return jsonify(
             {
                 'message': "Force Entry!",
                 'warning': True
             },200)
-    return jsonify(
-            {
-                'message': "No worry ",
-                'warning': False
-            },200)
+    
+    # GPIO.output(21,False)
+    # time.sleep(0.5)
+    # GPIO.output(21,True)
+    # time.sleep(0.00001)
+    # GPIO.output(21,False)
+    
+    # pulse_start,pulse_end = 0,0
+    # while GPIO.input(20) == 0:
+    #     pulse_start = time.time()
+        
+    # while GPIO.input(20) == 1:
+    #     pulse_end = time.time()
+        
+    # distance = (pulse_end-pulse_start) * 17150
+    # inches = round(distance / 2.54, 1)
+    
+    
+    # print(inches)
+    
+    # if inches < 10.0:
+    #     GPIO.output(6,GPIO.HIGH)
+
+        
+    #     return jsonify(
+    #         {
+    #             'message': "Force Entry!",
+    #             'warning': True
+    #         },200)
+    # return jsonify(
+    #         {
+    #             'message': "No worry ",
+    #             'warning': False
+    #         },200)
 
 def buzzer():
-    GPIO.output(6,True)
+    # GPIO.output(6,True)
+    print("Buzzer On")
     time.sleep(0.5)
-    GPIO.output(6,False)
+    # GPIO.output(6,False)
+    print("Buzzer On")
     time.sleep(0.5)
 
 @app.route("/offBuzzer", methods=['GET'])
@@ -183,7 +197,7 @@ def offBuzzer():
     
 def turnOffBuzzer():
     print("Buzzer Off")
-    GPIO.output(6, GPIO.LOW)
+    # GPIO.output(6, GPIO.LOW)
 
 # Main page
 @app.route('/')
@@ -195,11 +209,11 @@ def index():
 
 @app.route("/high", methods=['GET'])
 def high():
-    GPIO.output(6,GPIO.LOW)
+    # GPIO.output(6,GPIO.LOW)
 
-    GPIO.output(24, GPIO.HIGH)
-    time.sleep(3)
-    GPIO.output(24, GPIO.LOW)
+    # GPIO.output(24, GPIO.HIGH)
+    # time.sleep(3)
+    # GPIO.output(24, GPIO.LOW)
     return jsonify(
             {
                 'message': "LED on"
@@ -208,7 +222,7 @@ def high():
 
 @app.route("/low", methods=['GET'])
 def low():
-    GPIO.output(24, GPIO.LOW)
+    # GPIO.output(24, GPIO.LOW)
     return jsonify(
             {
                 'message': "LED OFF"
@@ -216,10 +230,6 @@ def low():
     
 
 
-# Facial login
-@app.route('/second_page')
-def second_page():
-    return render_template('facial-login.html')
 
 #  load facial recognition
 @app.route('/video_feed')
@@ -239,20 +249,19 @@ def video_feed():
 # Finger Login 
 @app.route('/seventh_page')
 def seventh_page():
-    
     return render_template('finger-login.html')
 
 # API for Fingerprint Result
 @app.route('/fingerlogin', methods=['GET'])       
 def verify_finger():
     if get_fingerprint():
-        print("Detected #", finger.finger_id, "with confidence", finger.confidence)
+        # print("Detected #", finger.finger_id, "with confidence", finger.confidence)
         
-        GPIO.output(6,GPIO.LOW)
+        # GPIO.output(6,GPIO.LOW)
 
-        GPIO.output(24, GPIO.HIGH)
-        time.sleep(3)
-        GPIO.output(24, GPIO.LOW)
+        # GPIO.output(24, GPIO.HIGH)
+        # time.sleep(3)
+        # GPIO.output(24, GPIO.LOW)
         
         return jsonify(
             {
@@ -271,16 +280,17 @@ def verify_finger():
         
 # Verify Finger Login Function
 def get_fingerprint():
-    """Get a finger print image, template it, and see if it matches!"""
-    print("Waiting for image...")
-    while finger.get_image() != adafruit_fingerprint.OK:
-        pass
-    print("Templating...")
-    if finger.image_2_tz(1) != adafruit_fingerprint.OK:
-        return False
-    print("Searching...")
-    if finger.finger_search() != adafruit_fingerprint.OK:
-        return False
+    return True
+    # """Get a finger print image, template it, and see if it matches!"""
+    # print("Waiting for image...")
+    # while finger.get_image() != adafruit_fingerprint.OK:
+    #     pass
+    # print("Templating...")
+    # if finger.image_2_tz(1) != adafruit_fingerprint.OK:
+    #     return False
+    # print("Searching...")
+    # if finger.finger_search() != adafruit_fingerprint.OK:
+    #     return False
     
     
     
@@ -346,11 +356,11 @@ def facialDetection(camera=None, face_detector=None):
                         if success == 2:
                             Text = "Access Granted"
                             
-                            GPIO.output(6,GPIO.LOW)
+                            # GPIO.output(6,GPIO.LOW)
 
-                            GPIO.output(24, GPIO.HIGH)
-                            time.sleep(3)
-                            GPIO.output(24, GPIO.LOW)
+                            # GPIO.output(24, GPIO.HIGH)
+                            # time.sleep(3)
+                            # GPIO.output(24, GPIO.LOW)
                             
                             textResult = response[0]
                             B, G, R = (0, 255, 0)
@@ -441,109 +451,115 @@ def fourt_page():
 # API for Fingerprint Register
 @app.route('/fingerprint', methods=['GET'])
 def fingerprint_registration():
-    if enroll_finger():
-        return jsonify({
+    
+    return jsonify({
             'error': False,
             'message': "Fingerprint enrolled successfully"
         },200)
-    else:
-        return jsonify({
-            'error': True,
-            'message': "Fingerprint enrolled failed"
-        },400)
+    
+    # if enroll_finger():
+    #     return jsonify({
+    #         'error': False,
+    #         'message': "Fingerprint enrolled successfully"
+    #     },200)
+    # else:
+    #     return jsonify({
+    #         'error': True,
+    #         'message': "Fingerprint enrolled failed"
+    #     },400)
 
 # Enroll Finger Function
-def enroll_finger():
-    """Take a 2 finger images and template it, then store in the next empty location"""
-    global location,finger_status
+# def enroll_finger():
+#     """Take a 2 finger images and template it, then store in the next empty location"""
+#     global location,finger_status
 
-    # Search for the next empty finger location
-    while finger.load_model(location) == adafruit_fingerprint.OK:
-        location += 1
+#     # Search for the next empty finger location
+#     while finger.load_model(location) == adafruit_fingerprint.OK:
+#         location += 1
 
-    for fingerimg in range(1, 3):
-        if fingerimg == 1:
-            print("Place finger on sensor...", end="")
-            finger_status = "Place finger on sensor..."
-        else:
-            print("Place same finger again...", end="")
-            finger_status = "Place finger on sensor..."
+#     for fingerimg in range(1, 3):
+#         if fingerimg == 1:
+#             print("Place finger on sensor...", end="")
+#             finger_status = "Place finger on sensor..."
+#         else:
+#             print("Place same finger again...", end="")
+#             finger_status = "Place finger on sensor..."
             
-        while True:
-            i = finger.get_image()
-            if i == adafruit_fingerprint.OK:
-                print("Image taken")
-                finger_status = "Image taken"
-                break
+#         while True:
+#             i = finger.get_image()
+#             if i == adafruit_fingerprint.OK:
+#                 print("Image taken")
+#                 finger_status = "Image taken"
+#                 break
             
-            if i == adafruit_fingerprint.NOFINGER:
-                print(".", end="")
-                finger_status = "waiting finger"
+#             if i == adafruit_fingerprint.NOFINGER:
+#                 print(".", end="")
+#                 finger_status = "waiting finger"
                 
-            elif i == adafruit_fingerprint.IMAGEFAIL:
-                print("Imaging error")
-                finger_status = "Imaging error"
-                return False
-            else:
-                print("Other error")
-                finger_status = "Other error"
-                return False
+#             elif i == adafruit_fingerprint.IMAGEFAIL:
+#                 print("Imaging error")
+#                 finger_status = "Imaging error"
+#                 return False
+#             else:
+#                 print("Other error")
+#                 finger_status = "Other error"
+#                 return False
 
-        print("Templating...", end="")
-        i = finger.image_2_tz(fingerimg)
-        if i == adafruit_fingerprint.OK:
-            print("Templated")
-            finger_status = "Templated"
-        else:
-            if i == adafruit_fingerprint.IMAGEMESS:
-                print("Image too messy")
-                finger_status = "Image too messy"
-            elif i == adafruit_fingerprint.FEATUREFAIL:
-                print("Could not identify features")
-                finger_status = "Could not identify features"
-            elif i == adafruit_fingerprint.INVALIDIMAGE:
-                print("Image invalid")
-                finger_status = "Image invalid"
-            else:
-                print("Other error")
-                finger_status = "Other error"
-            return False
+#         print("Templating...", end="")
+#         i = finger.image_2_tz(fingerimg)
+#         if i == adafruit_fingerprint.OK:
+#             print("Templated")
+#             finger_status = "Templated"
+#         else:
+#             if i == adafruit_fingerprint.IMAGEMESS:
+#                 print("Image too messy")
+#                 finger_status = "Image too messy"
+#             elif i == adafruit_fingerprint.FEATUREFAIL:
+#                 print("Could not identify features")
+#                 finger_status = "Could not identify features"
+#             elif i == adafruit_fingerprint.INVALIDIMAGE:
+#                 print("Image invalid")
+#                 finger_status = "Image invalid"
+#             else:
+#                 print("Other error")
+#                 finger_status = "Other error"
+#             return False
 
-        if fingerimg == 1:
-            print("Remove finger")
-            finger_status = "Remove finger"
-            time.sleep(1)
-            while i != adafruit_fingerprint.NOFINGER:
-                i = finger.get_image()
+#         if fingerimg == 1:
+#             print("Remove finger")
+#             finger_status = "Remove finger"
+#             time.sleep(1)
+#             while i != adafruit_fingerprint.NOFINGER:
+#                 i = finger.get_image()
 
-    print("Creating model...", end="")
-    i = finger.create_model()
-    if i == adafruit_fingerprint.OK:
-        print("Created")
-    else:
-        if i == adafruit_fingerprint.ENROLLMISMATCH:
-            print("Prints did not match")
-        else:
-            print("Other error")
-        return False
+#     print("Creating model...", end="")
+#     i = finger.create_model()
+#     if i == adafruit_fingerprint.OK:
+#         print("Created")
+#     else:
+#         if i == adafruit_fingerprint.ENROLLMISMATCH:
+#             print("Prints did not match")
+#         else:
+#             print("Other error")
+#         return False
 
-    print("Storing model #%d..." % location, end="")
-    i = finger.store_model(location)
-    if i == adafruit_fingerprint.OK:
-        print("Stored")
-    else:
-        if i == adafruit_fingerprint.BADLOCATION:
-            print("Bad storage location")
-        elif i == adafruit_fingerprint.FLASHERR:
-            print("Flash storage error")
-        else:
-            print("Other error")
-        return False
+#     print("Storing model #%d..." % location, end="")
+#     i = finger.store_model(location)
+#     if i == adafruit_fingerprint.OK:
+#         print("Stored")
+#     else:
+#         if i == adafruit_fingerprint.BADLOCATION:
+#             print("Bad storage location")
+#         elif i == adafruit_fingerprint.FLASHERR:
+#             print("Flash storage error")
+#         else:
+#             print("Other error")
+#         return False
 
-    print("Fingerprint enrolled successfully")
-    finger_status = "Fingerprint enrolled successfully"
-    location += 1  # Increment finger location
-    return True
+#     print("Fingerprint enrolled successfully")
+#     finger_status = "Fingerprint enrolled successfully"
+#     location += 1  # Increment finger location
+#     return True
 
 
 # Facial Registration
@@ -672,6 +688,10 @@ def surveilanceCamera(camera=None):
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame_encoded.tobytes() + b'\r\n')
         
+# Facial login
+@app.route('/facial_logins')
+def facial_logins():
+    return render_template('facial-login.html')
 
 
 if __name__ == '__main__':
@@ -679,8 +699,8 @@ if __name__ == '__main__':
     # TYPE on raspberry Terminal: hostname -I
     # copy and replace the host
     app.run(
-        host='192.168.254.116',
-        # host='0.0.0.0',        
+        # host='192.168.254.116',
+        host='0.0.0.0',        
         debug=True,
         port=4000)
     
